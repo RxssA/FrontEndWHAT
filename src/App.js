@@ -3,13 +3,14 @@ import React, { useState, useEffect } from 'react';
 function App() {
   const [data, setData] = useState(null);
 
-  // Fetch health data from backend
+  // Fetch health data from the backend
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/data');
-        const result = await response.json();
-        setData(result);
+        // Fetch the data from the backend API
+        const response = await fetch('/data');
+        const result = await response.json();  // Convert the response to JSON
+        setData(result);  // Update state with the fetched data
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -17,10 +18,10 @@ function App() {
 
     // Fetch data on initial load and refresh every 5 seconds
     fetchData();
-    const interval = setInterval(fetchData, 5000);
+    const interval = setInterval(fetchData, 4000);  // Refresh every 5 seconds
 
-    return () => clearInterval(interval); // Cleanup the interval
-  }, []);
+    return () => clearInterval(interval);  // Cleanup the interval on component unmount
+  }, []);  // Empty dependency array ensures this runs only once on mount
 
   return (
     <div className="App">
@@ -29,16 +30,16 @@ function App() {
       </header>
 
       {data ? (
-        <div className="data-container">
+        <div className="data">
           <div className="data-box">
-            <p><strong>Heart Rate:</strong> {data.heartRate} BPM</p>
+            <p>Heart Rate: {data.heartRate} BPM</p>
           </div>
           <div className="data-box">
-            <p><strong>Temperature:</strong> {data.temperature} °C</p>
+            <p>Temperature: {data.temperature} °C</p>
           </div>
         </div>
       ) : (
-        <p>Loading health data...</p>
+        <p>Loading health data...</p> // Display loading message if data is not yet available
       )}
     </div>
   );
