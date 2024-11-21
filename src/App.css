@@ -35,3 +35,23 @@ header {
   font-size: 1.5rem;
   color: #333;
 }
+
+.detail {
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid #ccc; /* Add a border */
+  border-radius: 10px; /* Optional: Round the corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow */
+  background-color: #fff; /* Optional: Background color */
+  width: 90%; /* Adjust width */
+  max-width: 800px; /* Set max width for larger screens */
+}
+
+.map-container {
+  width: 100%;
+  height: 400px; /* Define the height for the map */
+}
+
