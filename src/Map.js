@@ -14,7 +14,7 @@ class MapComponent extends Component {
             lat: latitude || 53.270962,  
             lng: longitude || -9.062691, 
           }}
-          style={{ width: '13%', height: '20%' }} 
+          style={{ width: '25%', height: '40%' }} 
         >
           <Marker position={{ lat: latitude, lng: longitude }} />
         </Map>
@@ -23,5 +23,5 @@ class MapComponent extends Component {
   }
 }
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyB-kcuMEGCyv3b4LWScJUGsRg_kP6Fu888', // Replace with your actual API key
+  apiKey: 'AIzaSyB-kcuMEGCyv3b4LWScJUGsRg_kP6Fu888',
 })(MapComponent);
