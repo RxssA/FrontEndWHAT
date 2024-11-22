@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Map from './Map';
+import './App.css'; // Assuming your styles are in App.css
 
 const UsingWebSocket = () => {
   const [data, setData] = useState(null);
@@ -17,8 +19,20 @@ const UsingWebSocket = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Wearable Health Data</h2>
+    <div className="App">
+      {/* Navigation Bar with Buttons */}
+      <nav className="navbar">
+        <h1>Wearable Health and Fitness Tracker</h1>
+        <div className="nav-buttons">
+          <button className="nav-btn">Heart Rate</button>
+          <button className="nav-btn">Skin Temperature</button>
+          <button className="nav-btn">Location</button>
+          <button className="nav-btn">Exercise</button>
+        </div>
+      </nav>
+
+
+
       {data ? (
         <div className="data">
           <div className="data-box">
@@ -30,11 +44,7 @@ const UsingWebSocket = () => {
           <div className="data-box">
             <p>
               Location: Lat {data.location?.lat}, Lng {data.location?.lng}
-            </p>
-          </div>
-          <div className="data-box">
-            <p>
-              Accelerometer: X={data.accelerometer?.x}, Y={data.accelerometer?.y}, Z={data.accelerometer?.z}
+              <Map latitude={data.location?.lat} longitude={data.location?.lng} />
             </p>
           </div>
         </div>
