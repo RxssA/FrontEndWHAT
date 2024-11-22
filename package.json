@@ -5,7 +5,10 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "swr": "^2.2.5",
+    "web-vitals": "^4.2.4",
+    "ws": "^8.18.0"
   },
   "scripts": {
     "start": "react-scripts start",
