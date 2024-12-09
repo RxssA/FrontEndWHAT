@@ -9,7 +9,7 @@ const TempPage = ({ data }) => {
 
       {data ? (
         <>
-          <div className="data-box">
+          <div className="data">
             <p><Map latitude={data.location?.lat} longitude={data.location?.lng} /></p>
           </div>
         </>

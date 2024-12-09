@@ -37,7 +37,7 @@ class HomePage extends Component {
       <Router>
         <div className="App">
           <nav className="navbar">
-            <h1>Wearable Health and Fitness Tracker</h1>
+            <h1>Wearable Health and Activity Tracker</h1>
             <div className="nav-buttons">
               <Link to="/">
                 <button className="nav-btn">Home</button>
@@ -62,7 +62,7 @@ class HomePage extends Component {
               <div className="home-page-content">
                 <div className="left-section">
                   <h2>Welcome to Your Health Tracker</h2>
-                  <p>Track your health and fitness data in real-time with the Wearable Health and Fitness Tracker (WHAT).</p>
+                  <p>Track your health and fitness data in real-time with the Wearable Health and Activity Tracker (WHAT).</p>
                 </div>
 
                 <div className="right-section">
@@ -70,6 +70,7 @@ class HomePage extends Component {
                     <div className="data-box">
                       <p>Heart Rate: {data.heartRate} BPM</p>
                       <p>Temperature: {data.temperature} °C</p>
+                      <p>Last Updated: {new Date(data.timestamp).toLocaleString()}</p>
                       <p>
                         <Map latitude={data.location?.lat} longitude={data.location?.lng} />
                       </p>
