@@ -14,7 +14,7 @@ class MapComponent extends Component {
             lat: latitude || 53.270962,  
             lng: longitude || -9.062691, 
           }}
-          style={{ width: '35%', height: '60%' }} 
+          style={{ width: '30%', height: '55%' }} 
         >
           <Marker position={{ lat: latitude, lng: longitude }} />
         </Map>

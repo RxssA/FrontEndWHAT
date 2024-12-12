@@ -108,12 +108,7 @@ const HeartRatePage = () => {
 
   return (
     <div className="centered-text">
-      <h1>Heart Rate</h1>
       <div className="data-box">
-        <p>Heart Rate: {data[data.length - 1].heartRate} BPM</p>
-        <p>Average Heart Rate: {data[data.length - 1].averageHeartRate} BPM</p>
-        <p>Highest Heart Rate: {data[data.length - 1].highestHeartRate} BPM</p>
-        <p>Lowest Heart Rate: {data[data.length - 1].lowestHeartRate} BPM</p>
       </div>
 
       <div>
