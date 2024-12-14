@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+import { Map2, Marker, GoogleApiWrapper } from 'google-maps-react';
 
 class MapComponent extends Component {
   componentDidUpdate(prevProps) {
@@ -16,8 +16,8 @@ class MapComponent extends Component {
     const { latitude, longitude } = this.props;
 
     return (
-      <div className="map-containerH">
-        <Map
+      <div className="map-container">
+        <Map2
           google={this.props.google}
           zoom={10}
           initialCenter={{
@@ -28,7 +28,7 @@ class MapComponent extends Component {
           ref={(ref) => (this.mapRef = ref)} 
         >
           <Marker position={{ lat: latitude, lng: longitude }} />
-        </Map>
+        </Map2>
       </div>
     );
   }

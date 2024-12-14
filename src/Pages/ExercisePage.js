@@ -11,9 +11,9 @@ const ExercisePage = ({ data }) => {
       {data ? (
         <>
           <div className="data-box">
-            <button className="activity-btn">Start a run</button>
-            <button className="activity-btn">Start a walk</button>
-            <button className="activity-btn">Start a workout</button>
+            <button className="nav-btn">Start a run</button>
+            <button className="nav-btn">Start a walk</button>
+            <button className="nav-btn">Start a workout</button>
           </div>
         </>
       ) : (

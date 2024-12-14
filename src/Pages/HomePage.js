@@ -85,6 +85,7 @@ class HomePage extends Component {
             <Route path="/temp" element={<TempPage data={data} />} />
             <Route path="/map" element={<MapPage data={data} />} />
             <Route path="/exercise" element={<ExercisePage data={data} />} />
+            
           </Routes>
         </div>
       </Router>
