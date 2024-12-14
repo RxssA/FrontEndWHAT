@@ -1,0 +1,14 @@
+.activity-btn {
+    background-color: #4caf50; 
+    color: white; 
+    border: none; 
+    border-radius: 4px;
+    padding: 10px 15px;
+    margin: 5px; 
+    font-size: 14px; 
+  }
+  
+  .activity-btn:hover {
+    background-color: #45a049; 
+  }
+  

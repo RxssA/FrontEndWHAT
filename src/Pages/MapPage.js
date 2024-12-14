@@ -1,16 +1,14 @@
 import React from 'react';
 import Map from '../Map';
-import './map.css';
+import './map.module.css';
 
 const MapPage = ({ data }) => {
   return (
-    <div className="centered-text">
+    <div className="map-page-container">
       <h1>Map</h1>
       {data ? (
-        <div className="data">
-          <div className="data-boxMap">
-            <Map latitude={data.location?.lat} longitude={data.location?.lng} />
-          </div>
+        <div className="map-container">
+          <Map latitude={data.location?.lat} longitude={data.location?.lng} />
         </div>
       ) : (
         <p>Loading data...</p>
@@ -20,4 +18,3 @@ const MapPage = ({ data }) => {
 };
 
 export default MapPage;
-

@@ -1,0 +1,23 @@
+
+.map-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+.map-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%; 
+  height: 80%; 
+  margin: 0 auto;
+}
+
+.map-container .google-map-react {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px; 
+}

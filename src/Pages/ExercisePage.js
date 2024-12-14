@@ -1,6 +1,8 @@
 import React from 'react';
+import './Exercise.module.css';
 
-const TempPage = ({ data }) => {
+
+const ExercisePage = ({ data }) => {
   return (
     <div className="centered-text">
       <h1>Track your workout</h1>
@@ -9,7 +11,6 @@ const TempPage = ({ data }) => {
       {data ? (
         <>
           <div className="data-box">
-            {/* Buttons that lead to nothing */}
             <button className="activity-btn">Start a run</button>
             <button className="activity-btn">Start a walk</button>
             <button className="activity-btn">Start a workout</button>
@@ -22,4 +23,4 @@ const TempPage = ({ data }) => {
   );
 };
 
-export default TempPage;
+export default ExercisePage;
