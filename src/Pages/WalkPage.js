@@ -28,7 +28,6 @@ const WalkPage = ({ data }) => {
       <h1>Walk</h1>
       <div className="timer">
         <p>Elapsed Time: {formatTime(time)}</p>
-        <p><Map latitude={data.location?.lat} longitude={data.location?.lng} /></p>
       </div>
       <Map />
     </div>
