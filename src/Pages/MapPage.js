@@ -1,13 +1,12 @@
 import React from 'react';
 import Map from '../Map';
-import './map.module.css';
+import styles from './map.module.css';
 
 const MapPage = ({ data }) => {
   return (
-    <div className="map-page-container">
-      <h1>Map</h1>
+    <div className={styles['map-page-container']}>
       {data ? (
-        <div className="map-container">
+        <div className={styles["data-box"]}>
           <Map latitude={data.location?.lat} longitude={data.location?.lng} />
         </div>
       ) : (

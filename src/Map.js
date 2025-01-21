@@ -13,18 +13,18 @@ class MapComponent extends Component {
   }
 
   render() {
-    const { latitude, longitude } = this.props;
+    const { latitude, longitude, zoom, style } = this.props;
 
     return (
       <div className="map-containerH">
         <Map
           google={this.props.google}
-          zoom={10}
+          zoom={zoom || 10} 
           initialCenter={{
             lat: latitude || 53.270962, 
             lng: longitude || -9.062691, 
           }}
-          style={{ width: '30%', height: '55%' }}
+          style={style || { width: '30%', height: '55%' }} 
           ref={(ref) => (this.mapRef = ref)} 
         >
           <Marker position={{ lat: latitude, lng: longitude }} />
@@ -35,5 +35,5 @@ class MapComponent extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyBdTVV2PTvMrIAlIXRZ1oGyXrjbcQFaDiY',
+  apiKey: 'AIzaSyAlo75FDh8QXQ74aw6uv9xlc8ufMg-AnQs',
 })(MapComponent);

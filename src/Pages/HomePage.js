@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Map from '../Map';
 import '../App.css'; 
+import './HomePageMap.css';
 import HeartRatePage from './HeartRatePage'; 
 import TempPage from './TempPage';
 import MapPage from './MapPage';
 import ExercisePage from './ExercisePage';
+import WalkPage from './WalkPage';
 
 class HomePage extends Component {
   constructor(props) {
@@ -16,9 +18,9 @@ class HomePage extends Component {
   }
 
   componentDidMount() {
-    this.ws = new WebSocket("http://192.168.1.14:4000");
+    this.ws = new WebSocket("http://172.20.10.12:4000");
 
-    this.ws.onmessage = (event) => {
+    this.ws.onmessage = (event) => {           // handles incoming msgs
       const receivedData = JSON.parse(event.data);
       this.setState({ data: receivedData });
     };
@@ -85,6 +87,7 @@ class HomePage extends Component {
             <Route path="/temp" element={<TempPage data={data} />} />
             <Route path="/map" element={<MapPage data={data} />} />
             <Route path="/exercise" element={<ExercisePage data={data} />} />
+            <Route path="/walk" element={<WalkPage data={data} />} />
             
           </Routes>
         </div>

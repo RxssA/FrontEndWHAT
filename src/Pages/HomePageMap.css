@@ -1,0 +1,20 @@
+.map-containerH {
+    width: 100%;
+    height: 400px; 
+  }
+
+  .right-section {
+    width: 45%;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .data-box {
+    margin: 10px 0;
+    font-size: 1rem;
+    text-align: left;
+  }

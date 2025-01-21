@@ -25,7 +25,7 @@ const HeartRatePage = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('http://192.168.1.14:4000/data/last10')
+    fetch('http://172.20.10.12:4000/data/last10')
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.error('Error fetching data:', error));
@@ -82,26 +82,26 @@ const HeartRatePage = () => {
       createDataset(
         'Heart Rate',
         heartRateData,
-        'rgba(75, 192, 192, 1)',
-        'rgba(75, 192, 192, 0.2)'
+        'rgb(75, 192, 192)',
+        'rgb(75, 192, 192)'
       ),
       createDataset(
         'Average Heart Rate',
         averageHeartRateData,
-        'rgba(153, 102, 255, 1)',
-        'rgba(153, 102, 255, 0.2)'
+        'rgb(153, 102, 255)',
+        'rgb(153, 102, 255)'
       ),
       createDataset(
         'Highest Heart Rate',
         highestHeartRateData,
-        'rgba(255, 99, 132, 1)',
-        'rgba(255, 99, 132, 0.2)'
+        'rgb(255, 99, 132)',
+        'rgb(255, 99, 132)'
       ),
       createDataset(
         'Lowest Heart Rate',
         lowestHeartRateData,
-        'rgba(54, 162, 235, 1)',
-        'rgba(54, 162, 235, 0.2)'
+        'rgb(54, 162, 235)',
+        'rgb(54, 162, 235)'
       ),
     ],
   };
