@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import Map from '../Map'; // Ensure your Map component supports polylines
-import './Walk.css';
-import styles from './map.module.css';
-import { getDistance } from 'geolib'; // Library for calculating distances
+import Map from '../Map';
+import styles from './Walk.module.css'; 
+import mapStyles from './map.module.css';
+import { getDistance } from 'geolib';
 
 const WalkPage = ({ data }) => {
   const [time, setTime] = useState(0); 
-  const [path, setPath] = useState([]); // Array to store GPS coordinates
-  const [distance, setDistance] = useState(0); // Total distance traveled
-  const [isWalking, setIsWalking] = useState(true); // Track if walk is ongoing
+  const [path, setPath] = useState([]);
+  const [distance, setDistance] = useState(0);
+  const [isWalking, setIsWalking] = useState(true);
 
   useEffect(() => {
-    // Timer to track elapsed time
     const intervalId = setInterval(() => {
       if (isWalking) {
         setTime((prevTime) => prevTime + 1);
@@ -24,12 +23,10 @@ const WalkPage = ({ data }) => {
   }, [isWalking]);
 
   useEffect(() => {
-    // Update path whenever new data is received
     if (data?.location) {
       setPath((prevPath) => {
         const newPath = [...prevPath, { lat: data.location.lat, lng: data.location.lng }];
 
-        // Calculate new distance if there are at least two points
         if (newPath.length > 1) {
           const lastIndex = newPath.length - 1;
           const additionalDistance = getDistance(
@@ -44,7 +41,6 @@ const WalkPage = ({ data }) => {
     }
   }, [data]);
 
-  // Format time in HH:MM:SS
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600).toString().padStart(2, '0');
     const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
@@ -53,7 +49,7 @@ const WalkPage = ({ data }) => {
   };
 
   const handleEndWalk = () => {
-    setIsWalking(false); // Stop the timer and updates
+    setIsWalking(false); 
   };
 
   return (
@@ -61,14 +57,16 @@ const WalkPage = ({ data }) => {
       {data ? (
         <div className={styles["data-box"]}>
           <h1>Walk</h1>
-          <div className="timer">
+          <div className={styles.timer}>
             <p>Elapsed Time: {formatTime(time)}</p>
           </div>
+          <p>Heart Rate: {data.heartRate} BPM</p>
           <p>Total Distance: {(distance / 1000).toFixed(2)} km</p>
           <Map
+            className={mapStyles['map-container']} 
             latitude={data.location?.lat}
             longitude={data.location?.lng}
-            path={path} // Pass the path to the Map component
+            path={path} 
           />
           {isWalking && (
             <button onClick={handleEndWalk} className={styles['end-walk-button']}>
