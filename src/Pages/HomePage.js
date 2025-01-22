@@ -56,9 +56,6 @@ class HomePage extends Component {
               <Link to="/exercise">
                 <button className="nav-btn">Exercise</button>
               </Link>
-              <Link to="/walk">
-                <button className="nav-btn">Start a walk</button>
-            </Link>
             </div>
           </nav>
 
