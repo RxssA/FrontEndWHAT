@@ -8,6 +8,8 @@ import TempPage from './TempPage';
 import MapPage from './MapPage';
 import ExercisePage from './ExercisePage';
 import WalkPage from './WalkPage';
+import RunPage from './RunPage';
+import WalkReport from './WalkReport'
 
 class HomePage extends Component {
   constructor(props) {
@@ -88,6 +90,8 @@ class HomePage extends Component {
             <Route path="/map" element={<MapPage data={data} />} />
             <Route path="/exercise" element={<ExercisePage data={data} />} />
             <Route path="/walk" element={<WalkPage data={data} />} />
+            <Route path="/run" element={<RunPage data={data} />} />
+            <Route path="/walkreport" element={<WalkReport data={data} />} />
             
           </Routes>
         </div>

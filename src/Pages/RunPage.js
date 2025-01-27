@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './Run.module.css';
 import mapStyles from './map.module.css';
 import { getDistance } from 'geolib';
+import Map from '../Map';
 
 const RunPage = ({ data }) => {
   const [time, setTime] = useState(0);

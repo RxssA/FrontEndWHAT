@@ -1,45 +1,40 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Map from '../Map';
-import styles from './Walk.module.css'; 
+import styles from './Walk.module.css';
 import mapStyles from './map.module.css';
 import { getDistance } from 'geolib';
 
 const WalkPage = ({ data }) => {
-  const [time, setTime] = useState(0); 
+  const [time, setTime] = useState(0);
   const [path, setPath] = useState([]);
   const [distance, setDistance] = useState(0);
-  const [isWalking, setIsWalking] = useState(true);
+  const [isWalking, setIsWalking] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (isWalking) {
+    let intervalId;
+
+    if (isWalking) {
+      intervalId = setInterval(() => {
         setTime((prevTime) => prevTime + 1);
-      }
-    }, 1000);
+      }, 1000);
+    }
 
     return () => {
       clearInterval(intervalId);
     };
   }, [isWalking]);
 
-  useEffect(() => {
-    if (data?.location) {
-      setPath((prevPath) => {
-        const newPath = [...prevPath, { lat: data.location.lat, lng: data.location.lng }];
+  const handleStartWalk = () => {
+    setIsWalking(true);
+  };
 
-        if (newPath.length > 1) {
-          const lastIndex = newPath.length - 1;
-          const additionalDistance = getDistance(
-            newPath[lastIndex - 1],
-            newPath[lastIndex]
-          );
-          setDistance((prevDistance) => prevDistance + additionalDistance);
-        }
-
-        return newPath;
-      });
-    }
-  }, [data]);
+  const handleEndWalk = () => {
+    setIsWalking(false);
+    navigate('/WalkReport', { state: { time, distance, path } });
+  };
 
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600).toString().padStart(2, '0');
@@ -48,35 +43,26 @@ const WalkPage = ({ data }) => {
     return `${hrs}:${mins}:${secs}`;
   };
 
-  const handleEndWalk = () => {
-    setIsWalking(false); 
-  };
-
   return (
     <div className={styles['map-page-container']}>
-      {data ? (
-        <div className={styles["data-box"]}>
-          <h1>Walk</h1>
-          <div className={styles.timer}>
-            <p>Elapsed Time: {formatTime(time)}</p>
-          </div>
-          <p>Heart Rate: {data.heartRate} BPM</p>
-          <p>Total Distance: {(distance / 1000).toFixed(2)} km</p>
-          <Map
-            className={mapStyles['map-container']} 
-            latitude={data.location?.lat}
-            longitude={data.location?.lng}
-            path={path} 
-          />
-          {isWalking && (
-            <button onClick={handleEndWalk} className={styles['end-walk-button']}>
-              End Walk
-            </button>
-          )}
-        </div>
-      ) : (
-        <p>Loading data...</p>
+      <h1>Walk</h1>
+      <div>
+        <p>Elapsed Time: {formatTime(time)}</p>
+        <p>Total Distance: {(distance / 1000).toFixed(2)} km</p>
+      </div>
+
+      <button onClick={handleStartWalk} className={styles['start-walk-button']}>Start Walk</button>
+      <button onClick={handleEndWalk} className={styles['end-walk-button']}>End Walk</button>
+
+      <div className={styles['map-container']}>
+      {data?.location && (
+        <Map
+          latitude={data.location.lat}
+          longitude={data.location.lng}
+          path={path}
+        />
       )}
+      </div>
     </div>
   );
 };
