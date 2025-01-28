@@ -1,21 +1,25 @@
-import React, { useState, useEffect } from 'react'; 
-import styles from './Run.module.css';
-import mapStyles from './map.module.css';
-import { getDistance } from 'geolib';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Map from '../Map';
+import styles from './Run.module.css';
+import { getDistance } from 'geolib';
 
 const RunPage = ({ data }) => {
   const [time, setTime] = useState(0);
   const [path, setPath] = useState([]);
   const [distance, setDistance] = useState(0);
-  const [isRunning, setIsRunning] = useState(true); 
+  const [isRunning, setIsRunning] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (isRunning) {
+    let intervalId;
+
+    if (isRunning) {
+      intervalId = setInterval(() => {
         setTime((prevTime) => prevTime + 1);
-      }
-    }, 1000);
+      }, 1000);
+    }
 
     return () => {
       clearInterval(intervalId);
@@ -23,23 +27,38 @@ const RunPage = ({ data }) => {
   }, [isRunning]);
 
   useEffect(() => {
-    if (data?.location) {
-      setPath((prevPath) => {
-        const newPath = [...prevPath, { lat: data.location.lat, lng: data.location.lng }];
+    if (isRunning && data?.location) {
+      const { lat, lng } = data.location;
 
-        if (newPath.length > 1) {
-          const lastIndex = newPath.length - 1;
-          const additionalDistance = getDistance(
-            newPath[lastIndex - 1],
-            newPath[lastIndex]
+      // Add the new location to the path
+      setPath((prevPath) => {
+        const updatedPath = [...prevPath, { lat, lng }];
+
+        // Recalculate total distance
+        if (updatedPath.length > 1) {
+          const lastSegmentDistance = getDistance(
+            updatedPath[updatedPath.length - 2],
+            updatedPath[updatedPath.length - 1]
           );
-          setDistance((prevDistance) => prevDistance + additionalDistance);
+          setDistance((prevDistance) => prevDistance + lastSegmentDistance);
         }
 
-        return newPath;
+        return updatedPath;
       });
     }
-  }, [data]);
+  }, [data?.location, isRunning]);
+
+  const handleStartRun = () => {
+    setIsRunning(true);
+    setPath([]); // Reset path at the start of a walk
+    setDistance(0); // Reset distance
+    setTime(0); // Reset timer
+  };
+
+  const handleEndRun = () => {
+    setIsRunning(false);
+    navigate('/RunReport', { state: { time, distance, path } });
+  };
 
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600).toString().padStart(2, '0');
@@ -48,35 +67,34 @@ const RunPage = ({ data }) => {
     return `${hrs}:${mins}:${secs}`;
   };
 
-  const handleEndRun = () => {
-    setIsRunning(false);
+  const calculatePace = () => {
+    if (distance === 0) return 'N/A';
+    const paceInSecondsPerKm = time / (distance / 1000); // time (s) per km
+    const mins = Math.floor(paceInSecondsPerKm / 60);
+    const secs = Math.round(paceInSecondsPerKm % 60).toString().padStart(2, '0');
+    return `${mins}:${secs} min/km`;
   };
 
   return (
     <div className={styles['map-page-container']}>
-      {data ? (
-        <div className={styles['data-box']}>
-          <h1>Run</h1>
-          <div className={styles.timer}>
-            <p>Elapsed Time: {formatTime(time)}</p>
-          </div>
-          <p>Heart Rate: {data.heartRate} BPM</p>
-          <p>Total Distance: {(distance / 1000).toFixed(2)} km</p>
+      <h1>Run</h1>
+      <div>
+        <p>Elapsed Time: {formatTime(time)}</p>
+        <p>Total Distance: {(distance / 1000).toFixed(2)} km</p>
+        <p>Pace: {calculatePace()}</p>
+      </div>
+
+      <button onClick={handleStartRun} className={styles['start-run-button']}>Start Run</button>
+      <button onClick={handleEndRun} className={styles['end-run-button']}>End Run</button>
+
+      <div className={styles['map-container']}>
+        {data?.location && (
           <Map
-            className={mapStyles['map-container']}
-            latitude={data.location?.lat}
-            longitude={data.location?.lng}
-            path={path}
+            latitude={data.location.lat}
+            longitude={data.location.lng}
           />
-          {isRunning && (
-            <button onClick={handleEndRun} className={styles['end-run-button']}>
-              End Run
-            </button>
-          )}
-        </div>
-      ) : (
-        <p>Loading data...</p>
-      )}
+        )}
+      </div>
     </div>
   );
 };
