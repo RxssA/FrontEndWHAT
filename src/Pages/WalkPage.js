@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Map from '../Map';
 import styles from './Walk.module.css';
-import mapStyles from './map.module.css';
 import { getDistance } from 'geolib';
 
 const WalkPage = ({ data }) => {
@@ -27,8 +26,33 @@ const WalkPage = ({ data }) => {
     };
   }, [isWalking]);
 
+  useEffect(() => {
+    if (isWalking && data?.location) {
+      const { lat, lng } = data.location;
+
+      // Add the new location to the path
+      setPath((prevPath) => {
+        const updatedPath = [...prevPath, { lat, lng }];
+
+        // Recalculate total distance
+        if (updatedPath.length > 1) {
+          const lastSegmentDistance = getDistance(
+            updatedPath[updatedPath.length - 2],
+            updatedPath[updatedPath.length - 1]
+          );
+          setDistance((prevDistance) => prevDistance + lastSegmentDistance);
+        }
+
+        return updatedPath;
+      });
+    }
+  }, [data?.location, isWalking]);
+
   const handleStartWalk = () => {
     setIsWalking(true);
+    setPath([]); // Reset path at the start of a walk
+    setDistance(0); // Reset distance
+    setTime(0); // Reset timer
   };
 
   const handleEndWalk = () => {
@@ -43,25 +67,33 @@ const WalkPage = ({ data }) => {
     return `${hrs}:${mins}:${secs}`;
   };
 
+  const calculatePace = () => {
+    if (distance === 0) return 'N/A';
+    const paceInSecondsPerKm = time / (distance / 1000); // time (s) per km
+    const mins = Math.floor(paceInSecondsPerKm / 60);
+    const secs = Math.round(paceInSecondsPerKm % 60).toString().padStart(2, '0');
+    return `${mins}:${secs} min/km`;
+  };
+
   return (
     <div className={styles['map-page-container']}>
       <h1>Walk</h1>
       <div>
         <p>Elapsed Time: {formatTime(time)}</p>
         <p>Total Distance: {(distance / 1000).toFixed(2)} km</p>
+        <p>Pace: {calculatePace()}</p>
       </div>
 
       <button onClick={handleStartWalk} className={styles['start-walk-button']}>Start Walk</button>
       <button onClick={handleEndWalk} className={styles['end-walk-button']}>End Walk</button>
 
       <div className={styles['map-container']}>
-      {data?.location && (
-        <Map
-          latitude={data.location.lat}
-          longitude={data.location.lng}
-          path={path}
-        />
-      )}
+        {data?.location && (
+          <Map
+            latitude={data.location.lat}
+            longitude={data.location.lng}
+          />
+        )}
       </div>
     </div>
   );
