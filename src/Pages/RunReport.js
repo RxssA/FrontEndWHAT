@@ -21,11 +21,20 @@ const RunReport = () => {
     return `${distanceInMeters.toFixed(2)} m`;
   };
 
+  const calculatePace = () => {
+    if (distance === 0) return 'N/A';
+    const paceInSecondsPerKm = time / (distance / 1000); // time (s) per km
+    const mins = Math.floor(paceInSecondsPerKm / 60);
+    const secs = Math.round(paceInSecondsPerKm % 60).toString().padStart(2, '0');
+    return `${mins}:${secs} min/km`;
+  };
+
   return (
     <div className={styles["data-box"]}>
       <h1>Run Report</h1>
       <p>Total Time: {time ? formatTime(time) : "N/A"}</p>
       <p>Total Distance: {distance ? formatDistance(distance) : "N/A"}</p>
+      <p>Pace: {calculatePace()}</p>
       <div className={styles["data-box1"]}>
         {path ? (
           <div className={styles["data-box1"]}>
