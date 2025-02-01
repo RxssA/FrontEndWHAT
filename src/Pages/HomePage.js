@@ -10,6 +10,7 @@ import ExercisePage from './ExercisePage';
 import WalkPage from './WalkPage';
 import RunPage from './RunPage';
 import WalkReport from './WalkReport'
+import RunReport from './RunReport'
 
 class HomePage extends Component {
   constructor(props) {
@@ -92,6 +93,7 @@ class HomePage extends Component {
             <Route path="/walk" element={<WalkPage data={data} />} />
             <Route path="/run" element={<RunPage data={data} />} />
             <Route path="/walkreport" element={<WalkReport data={data} />} />
+            <Route path="/RunReport" element={<RunReport data={data} />} />
             
           </Routes>
         </div>

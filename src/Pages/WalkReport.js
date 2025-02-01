@@ -26,7 +26,7 @@ ChartJS.register(
 
 const WalkReport = () => {
   const { state } = useLocation();
-  const { time, distance, path, startTime, endTime } = state || {}; // Add startTime and endTime to state
+  const { time, distance, path, startTime, endTime } = state || {}; 
   const [heartRateData, setHeartRateData] = useState([]);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const WalkReport = () => {
       .catch((error) => console.error('Error fetching heart rate data:', error));
   }, []);
 
-  // Filter heart rate data based on walk start and end times
+  
   const filteredHeartRateData = heartRateData.filter((record) => {
     const recordTime = new Date(record.timestamp).getTime();
     return recordTime >= new Date(startTime).getTime() && recordTime <= new Date(endTime).getTime();
