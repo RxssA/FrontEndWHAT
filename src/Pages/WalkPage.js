@@ -92,6 +92,7 @@ const WalkPage = ({ data }) => {
           <Map
             latitude={data.location.lat}
             longitude={data.location.lng}
+            path={path}
           />
         )}
       </div>

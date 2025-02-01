@@ -1,11 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "./WalkReport.module.css";
 import Map from "../Map";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const WalkReport = () => {
   const { state } = useLocation();
-  const { time, distance, path } = state || {};
+  const { time, distance, path, startTime, endTime } = state || {}; // Add startTime and endTime to state
+  const [heartRateData, setHeartRateData] = useState([]);
+
+  useEffect(() => {
+    fetch('http://192.168.0.23:4000/data/last10')
+      .then((response) => response.json())
+      .then((data) => setHeartRateData(data))
+      .catch((error) => console.error('Error fetching heart rate data:', error));
+  }, []);
+
+  // Filter heart rate data based on walk start and end times
+  const filteredHeartRateData = heartRateData.filter((record) => {
+    const recordTime = new Date(record.timestamp).getTime();
+    return recordTime >= new Date(startTime).getTime() && recordTime <= new Date(endTime).getTime();
+  });
 
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600).toString().padStart(2, "0");
@@ -21,22 +56,109 @@ const WalkReport = () => {
     return `${distanceInMeters.toFixed(2)} m`;
   };
 
+  const calculatePace = () => {
+    if (distance === 0) return 'N/A';
+    const paceInSecondsPerKm = time / (distance / 1000); // time (s) per km
+    const mins = Math.floor(paceInSecondsPerKm / 60);
+    const secs = Math.round(paceInSecondsPerKm % 60).toString().padStart(2, '0');
+    return `${mins}:${secs} min/km`;
+  };
+
+  const labels = filteredHeartRateData.map((record) => new Date(record.timestamp).toLocaleTimeString());
+  const heartRateValues = filteredHeartRateData.map((record) => record.heartRate);
+  const averageHeartRateData = filteredHeartRateData.map((record) => record.averageHeartRate);
+  const highestHeartRateData = filteredHeartRateData.map((record) => record.highestHeartRate);
+  const lowestHeartRateData = filteredHeartRateData.map((record) => record.lowestHeartRate);
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Time',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Heart Rate (BPM)',
+        },
+        beginAtZero: true,
+      },
+    },
+  };
+
+  const createDataset = (label, data, borderColor, backgroundColor) => ({
+    label,
+    data,
+    borderColor,
+    backgroundColor,
+    borderWidth: 2,
+    tension: 0.3,
+  });
+
+  const chartData = {
+    labels,
+    datasets: [
+      createDataset(
+        'Heart Rate',
+        heartRateValues,
+        'rgb(75, 192, 192)',
+        'rgb(75, 192, 192)'
+      ),
+      createDataset(
+        'Average Heart Rate',
+        averageHeartRateData,
+        'rgb(153, 102, 255)',
+        'rgb(153, 102, 255)'
+      ),
+      createDataset(
+        'Highest Heart Rate',
+        highestHeartRateData,
+        'rgb(255, 99, 132)',
+        'rgb(255, 99, 132)'
+      ),
+      createDataset(
+        'Lowest Heart Rate',
+        lowestHeartRateData,
+        'rgb(54, 162, 235)',
+        'rgb(54, 162, 235)'
+      ),
+    ],
+  };
+
   return (
     <div className={styles["data-box"]}>
       <h1>Walk Report</h1>
       <p>Total Time: {time ? formatTime(time) : "N/A"}</p>
       <p>Total Distance: {distance ? formatDistance(distance) : "N/A"}</p>
+      <p>Pace: {calculatePace()}</p>
       <div className={styles["data-box1"]}>
         {path ? (
           <div className={styles["data-box1"]}>
-          <Map
-            latitude={path[0]?.lat}
-            longitude={path[0]?.lng}
-            path={path}
-          />
+            <Map
+              latitude={path[0]?.lat}
+              longitude={path[0]?.lng}
+              path={path}
+            />
           </div>
         ) : (
           <p>Loading map...</p>
+        )}
+      </div>
+      <div>
+        <h2>Heart Rate Data During Walk</h2>
+        {filteredHeartRateData.length > 0 ? (
+          <Line data={chartData} options={chartOptions} width={1000} height={400} />
+        ) : (
+          <p>No heart rate data available for the walk duration.</p>
         )}
       </div>
     </div>
