@@ -27,18 +27,16 @@ class MapComponent extends Component {
           google={this.props.google}
           zoom={zoom || 14}
           initialCenter={{
-            lat: latitude || 53.270962, // Default to Galway, Ireland
+            lat: latitude || 53.270962,
             lng: longitude || -9.062691,
           }}
           style={style || { width: '30%', height: '400px' }}
           ref={(ref) => (this.mapRef = ref)}
         >
-          {/* Marker for the current position */}
           {latitude && longitude && (
             <Marker position={{ lat: latitude, lng: longitude }} />
           )}
 
-          {/* Polyline for the path */}
           {path && path.length > 0 && (
             <Polyline path={path} options={polylineOptions} />
           )}
@@ -49,5 +47,5 @@ class MapComponent extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY, // Use your API key
+  apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
 })(MapComponent);

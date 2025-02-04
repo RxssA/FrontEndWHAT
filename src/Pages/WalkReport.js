@@ -27,6 +27,11 @@ ChartJS.register(
 const WalkReport = () => {
   const { state } = useLocation();
   const { time, distance, path, startTime, endTime } = state || {}; 
+  
+  // If startTime or endTime are undefined, set to current time as fallback
+  const start = startTime ? new Date(startTime).getTime() : Date.now();
+  const end = endTime ? new Date(endTime).getTime() : Date.now();
+  
   const [heartRateData, setHeartRateData] = useState([]);
 
   useEffect(() => {
@@ -36,11 +41,16 @@ const WalkReport = () => {
       .catch((error) => console.error('Error fetching heart rate data:', error));
   }, []);
 
-  
+  // Filter heart rate data based on start and end times
   const filteredHeartRateData = heartRateData.filter((record) => {
     const recordTime = new Date(record.timestamp).getTime();
-    return recordTime >= new Date(startTime).getTime() && recordTime <= new Date(endTime).getTime();
+    return recordTime >= start && recordTime <= end;
   });
+
+  console.log("Filtered Heart Rate Data:", filteredHeartRateData);
+  console.log("Start Time:", new Date(start).toLocaleString());
+  console.log("End Time:", new Date(end).toLocaleString());
+  console.log("Heart Rate Data Timestamps:", heartRateData.map(record => new Date(record.timestamp).toLocaleString()));
 
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600).toString().padStart(2, "0");

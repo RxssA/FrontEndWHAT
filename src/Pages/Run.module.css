@@ -52,7 +52,7 @@
 .end-run-button {
   margin-top: 20px;
   padding: 12px 25px;
-  background-color: #27ae60;
+  background-color: #0a889e;
   color: white;
   border: none;
   border-radius: 8px;
@@ -64,12 +64,12 @@
 
 .start-run-button:hover, 
 .end-run-button:hover {
-  background-color: #219653; 
+  background-color: #06cdff; 
 }
 
 .start-run-button:active, 
 .end-run-button:active {
-  background-color: #1b7d46; 
+  background-color: #06cdff; 
   transform: scale(0.95); 
 }
 

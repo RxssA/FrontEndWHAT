@@ -10,6 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import './HeartRatePage.module.css';
 
 ChartJS.register(
   CategoryScale,
@@ -108,14 +109,16 @@ const HeartRatePage = () => {
 
   return (
     <div className="centered-text">
-      <div className="data-box">
-      </div>
-
-      <div>
-        <h2>Heart Rate Data</h2>
-        <Line data={chartData} options={chartOptions} width={1000} height={400} />
-      </div>
-    </div>
+  <div className="data-box">
+    <h2>Heart Rate Data</h2>
+    <Line data={chartData} options={chartOptions} width={1000} height={400} />
+  </div>
+  <div className="text-container">
+    <h3>Heart Rate Statistics</h3>
+    <p>additional text or statistics about the heart rate data.</p>
+  </div>
+</div>
+    
   );
 };
 

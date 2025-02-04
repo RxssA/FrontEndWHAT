@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Map from '../Map';
-import '../App.css'; 
+import '../App.css';
 import './HomePageMap.css';
-import HeartRatePage from './HeartRatePage'; 
+import HeartRatePage from './HeartRatePage';
 import TempPage from './TempPage';
 import MapPage from './MapPage';
 import ExercisePage from './ExercisePage';
 import WalkPage from './WalkPage';
 import RunPage from './RunPage';
-import WalkReport from './WalkReport'
-import RunReport from './RunReport'
+import WalkReport from './WalkReport';
+import RunReport from './RunReport';
 
 class HomePage extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class HomePage extends Component {
   componentDidMount() {
     this.ws = new WebSocket("http://192.168.0.23:4000");
 
-    this.ws.onmessage = (event) => {           // handles incoming msgs
+    this.ws.onmessage = (event) => {
       const receivedData = JSON.parse(event.data);
       this.setState({ data: receivedData });
     };
@@ -42,50 +42,73 @@ class HomePage extends Component {
       <Router>
         <div className="App">
           <nav className="navbar">
-            <h1>Wearable Health and Activity Tracker</h1>
-            <div className="nav-buttons">
-              <Link to="/">
-                <button className="nav-btn">Home</button>
-              </Link>
-              <Link to="/heart-rate">
-                <button className="nav-btn">Heart Rate</button>
-              </Link>
-              <Link to="/temp">
-                <button className="nav-btn">Skin Temperature</button>
-              </Link>
-              <Link to="/map">
-                <button className="nav-btn">Location</button>
-              </Link>
-              <Link to="/exercise">
-                <button className="nav-btn">Exercise</button>
-              </Link>
+            <div className="navbar-content">
+              <h1>Wearable Health and Activity Tracker</h1>
+              <div className="nav-buttons">
+                <Link to="/">
+                  <button className="nav-btn">Home</button>
+                </Link>
+                <Link to="/heart-rate">
+                  <button className="nav-btn">Heart Rate</button>
+                </Link>
+                <Link to="/temp">
+                  <button className="nav-btn">Skin Temperature</button>
+                </Link>
+                <Link to="/map">
+                  <button className="nav-btn">Location</button>
+                </Link>
+                <Link to="/exercise">
+                  <button className="nav-btn">Exercise</button>
+                </Link>
+              </div>
             </div>
           </nav>
 
           <Routes>
-            <Route path="/" element={
-              <div className="home-page-content">
-                <div className="left-section">
-                  <h2>Welcome to Your Health Tracker</h2>
-                  <p>Track your health and fitness data in real-time with the Wearable Health and Activity Tracker (WHAT).</p>
-                </div>
+            <Route
+              path="/"
+              element={
+                <div className="home-page-content">
+                  <div className="welcome-section">
+                    <h2>Welcome to Your Health Tracker</h2>
+                    <p>
+                      Track your health and fitness data in real-time with the Wearable Health and Activity Tracker (WHAT).
+                    </p>
+                  </div>
 
-                <div className="right-section">
-                  {data ? (
-                    <div className="data-box">
-                      <p>Heart Rate: {data.heartRate} BPM</p>
-                      <p>Temperature: {data.temperature} °C</p>
-                      <p>Last Updated: {new Date(data.timestamp).toLocaleString()}</p>
-                      <p>
-                        <Map latitude={data.location?.lat} longitude={data.location?.lng} />
-                      </p>
+                  <div className="data-section">
+                    <div className="data-card weather-card">
+                      <h3>Weather API</h3>
+                      <p>Weather data will be displayed here.</p>
                     </div>
-                  ) : (
-                    <p>Loading health data...</p>
-                  )}
+
+                  
+                    {data ? (
+                      <div className="data-card">
+                        <h3>Current Health Data</h3>
+                        <div className="data-item">
+                          <span>Heart Rate:</span>
+                          <span>{data.heartRate} BPM</span>
+                        </div>
+                        <div className="data-item">
+                          <span>Temperature:</span>
+                          <span>{data.temperature} °C</span>
+                        </div>
+                        <div className="data-item">
+                          <span>Last Updated:</span>
+                          <span>{new Date(data.timestamp).toLocaleString()}</span>
+                        </div>
+                        <div className="map-container">
+                          <Map latitude={data.location?.lat} longitude={data.location?.lng} />
+                        </div>
+                      </div>
+                    ) : (
+                      <p>Loading health data...</p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            } />
+              }
+            />
             <Route path="/heart-rate" element={<HeartRatePage data={data} />} />
             <Route path="/temp" element={<TempPage data={data} />} />
             <Route path="/map" element={<MapPage data={data} />} />
@@ -94,7 +117,6 @@ class HomePage extends Component {
             <Route path="/run" element={<RunPage data={data} />} />
             <Route path="/walkreport" element={<WalkReport data={data} />} />
             <Route path="/RunReport" element={<RunReport data={data} />} />
-            
           </Routes>
         </div>
       </Router>
@@ -102,4 +124,4 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage; 
+export default HomePage;
