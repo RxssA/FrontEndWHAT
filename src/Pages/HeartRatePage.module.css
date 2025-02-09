@@ -1,52 +1,95 @@
+/* HeartRatePage.module.css */
 
 .centered-text {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-    gap: 40px; 
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
+  text-align: center;
+  font-family: Arial, sans-serif;
+  margin-top: 50px;
+}
 
-  .data-box {
-    flex: 1; 
-    max-width: 800px; 
-  }
-  
+h2 {
+  font-size: 2rem;
+  color: #333;
+}
 
+h3 {
+  font-size: 1.5rem;
+  color: #444;
+  margin-top: 30px;
+}
+
+.data-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.text-container {
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin-top: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fact-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #4caf50;
+  font-size: 1.1rem;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+.fact-box:hover {
+  background-color: #e8f5e9;
+}
+
+@media (max-width: 600px) {
   .text-container {
-    flex: 1; 
-    max-width: 400px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 90%;
+    padding: 15px;
   }
-  
 
-  canvas {
-    max-width: 100%;
-    height: auto !important; 
+  .fact-box {
+    font-size: 1rem;
   }
-  
 
-  h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #333;
+  .next-btn {
+    background: linear-gradient(135deg, #4caf50, #2e7d32);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    width: 50px;
+    height: 50px;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    outline: none;
   }
   
-
-  @media (max-width: 768px) {
-    .centered-text {
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-    }
-  
-    .data-box,
-    .text-container {
-      max-width: 100%; 
-    }
+  .next-btn:hover {
+    background: linear-gradient(135deg, #66bb6a, #388e3c);
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
   }
+  
+  .next-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+}

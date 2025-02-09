@@ -24,6 +24,17 @@ ChartJS.register(
 
 const HeartRatePage = () => {
   const [data, setData] = useState([]);
+  const [factIndex, setFactIndex] = useState(0);
+
+  const heartRateFacts = [
+    "The average resting heart rate for adults is 60-100 BPM.",
+    "Regular exercise can lower your resting heart rate over time.",
+    "Athletes often have a resting heart rate below 60 BPM.",
+    "Stress, caffeine, and dehydration can increase heart rate.",
+    "The highest recorded human heart rate was over 300 BPM due to a rare medical condition.",
+    "Bradycardia (low heart rate) is considered anything below 60 BPM (except in athletes).",
+    "Tachycardia (high heart rate) is when the resting heart rate exceeds 100 BPM."
+  ];
 
   useEffect(() => {
     fetch('http://192.168.0.23:4000/data/last10')
@@ -67,7 +78,6 @@ const HeartRatePage = () => {
     },
   };
 
-  // Chart datasets
   const createDataset = (label, data, borderColor, backgroundColor) => ({
     label,
     data,
@@ -80,45 +90,31 @@ const HeartRatePage = () => {
   const chartData = {
     labels,
     datasets: [
-      createDataset(
-        'Heart Rate',
-        heartRateData,
-        'rgb(75, 192, 192)',
-        'rgb(75, 192, 192)'
-      ),
-      createDataset(
-        'Average Heart Rate',
-        averageHeartRateData,
-        'rgb(153, 102, 255)',
-        'rgb(153, 102, 255)'
-      ),
-      createDataset(
-        'Highest Heart Rate',
-        highestHeartRateData,
-        'rgb(255, 99, 132)',
-        'rgb(255, 99, 132)'
-      ),
-      createDataset(
-        'Lowest Heart Rate',
-        lowestHeartRateData,
-        'rgb(54, 162, 235)',
-        'rgb(54, 162, 235)'
-      ),
+      createDataset('Heart Rate', heartRateData, 'rgb(75, 192, 192)', 'rgb(75, 192, 192)'),
+      createDataset('Average Heart Rate', averageHeartRateData, 'rgb(153, 102, 255)', 'rgb(153, 102, 255)'),
+      createDataset('Highest Heart Rate', highestHeartRateData, 'rgb(255, 99, 132)', 'rgb(255, 99, 132)'),
+      createDataset('Lowest Heart Rate', lowestHeartRateData, 'rgb(54, 162, 235)', 'rgb(54, 162, 235)'),
     ],
+  };
+
+  const nextFact = () => {
+    setFactIndex((prevIndex) => (prevIndex + 1) % heartRateFacts.length);
   };
 
   return (
     <div className="centered-text">
-  <div className="data-box">
-    <h2>Heart Rate Data</h2>
-    <Line data={chartData} options={chartOptions} width={1000} height={400} />
-  </div>
-  <div className="text-container">
-    <h3>Heart Rate Statistics</h3>
-    <p>additional text or statistics about the heart rate data.</p>
-  </div>
-</div>
-    
+      <div className="data-box">
+        <h2>Heart Rate Data</h2>
+        <Line data={chartData} options={chartOptions} width={1000} height={400} />
+      </div>
+      <div className="text-container">
+        <h3>Heart Rate Fact</h3>
+        <div className="fact-box">
+          <p>{heartRateFacts[factIndex]}</p>
+          <button className="next-btn" onClick={nextFact}>➡️</button>
+        </div>
+      </div>
+    </div>
   );
 };
 
