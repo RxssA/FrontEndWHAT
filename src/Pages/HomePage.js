@@ -11,7 +11,11 @@ import WalkPage from './WalkPage';
 import RunPage from './RunPage';
 import WalkReport from './WalkReport';
 import RunReport from './RunReport';
+import Workout from './Workout';
 
+
+
+// https://api.open-meteo.com/v1/forecast?latitude=53.270962&longitude=-9.062691&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,rain,showers,snowfall,wind_direction_10m&hourly=temperature_2m,relative_humidity_2m,rain,showers,weather_code,visibility,wind_speed_10m,wind_speed_80m,wind_speed_120m&daily=sunrise,sunset,uv_index_max,uv_index_clear_sky_max
 class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -115,6 +119,7 @@ class HomePage extends Component {
             <Route path="/exercise" element={<ExercisePage data={data} />} />
             <Route path="/walk" element={<WalkPage data={data} />} />
             <Route path="/run" element={<RunPage data={data} />} />
+            <Route path="/workout" element={<Workout data={data} />} />
             <Route path="/walkreport" element={<WalkReport data={data} />} />
             <Route path="/RunReport" element={<RunReport data={data} />} />
           </Routes>

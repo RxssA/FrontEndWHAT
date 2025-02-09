@@ -82,6 +82,8 @@ const WalkPage = ({ data }) => {
         <p>Elapsed Time: {formatTime(time)}</p>
         <p>Total Distance: {(distance / 1000).toFixed(2)} km</p>
         <p>Pace: {calculatePace()}</p>
+        <span>Heart Rate:</span>
+        <span>{data.heartRate} BPM</span>
       </div>
 
       <button onClick={handleStartWalk} className={styles['start-walk-button']}>Start Walk</button>
