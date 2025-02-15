@@ -15,23 +15,27 @@ import Workout from './Workout';
 import WorkoutReport from './WorkoutReport';
 
 
+const WEATHER_API_URL =
+  "https://api.open-meteo.com/v1/forecast?latitude=53.270962&longitude=-9.062691&current=temperature_2m,apparent_temperature,precipitation,rain,showers,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation_probability,rain,showers,visibility,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_hours&timezone=Europe/Dublin";
 
-// https://api.open-meteo.com/v1/forecast?latitude=53.270962&longitude=-9.062691&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,rain,showers,snowfall,wind_direction_10m&hourly=temperature_2m,relative_humidity_2m,rain,showers,weather_code,visibility,wind_speed_10m,wind_speed_80m,wind_speed_120m&daily=sunrise,sunset,uv_index_max,uv_index_clear_sky_max
 class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: null,
+      weather: null, // Stores weather data
     };
   }
 
   componentDidMount() {
     this.ws = new WebSocket("http://192.168.0.23:4000");
-
     this.ws.onmessage = (event) => {
       const receivedData = JSON.parse(event.data);
       this.setState({ data: receivedData });
     };
+
+
+    this.fetchWeatherData();
   }
 
   componentWillUnmount() {
@@ -40,8 +44,20 @@ class HomePage extends Component {
     }
   }
 
+  async fetchWeatherData() {
+    try {
+      const response = await fetch(WEATHER_API_URL);
+      const weatherData = await response.json();
+      this.setState({ weather: weatherData });
+    } catch (error) {
+      console.error("Error fetching weather data:", error);
+    }
+  }
+
   render() {
-    const { data } = this.state;
+    const { data, weather } = this.state;
+    const currentWeather = weather?.current || {};
+    const dailyWeather = weather?.daily || {};
 
     return (
       <Router>
@@ -50,21 +66,11 @@ class HomePage extends Component {
             <div className="navbar-content">
               <h1>Wearable Health and Activity Tracker</h1>
               <div className="nav-buttons">
-                <Link to="/">
-                  <button className="nav-btn">Home</button>
-                </Link>
-                <Link to="/heart-rate">
-                  <button className="nav-btn">Heart Rate</button>
-                </Link>
-                <Link to="/temp">
-                  <button className="nav-btn">Skin Temperature</button>
-                </Link>
-                <Link to="/map">
-                  <button className="nav-btn">Location</button>
-                </Link>
-                <Link to="/exercise">
-                  <button className="nav-btn">Exercise</button>
-                </Link>
+                <Link to="/"><button className="nav-btn">Home</button></Link>
+                <Link to="/heart-rate"><button className="nav-btn">Heart Rate</button></Link>
+                <Link to="/temp"><button className="nav-btn">Skin Temperature</button></Link>
+                <Link to="/map"><button className="nav-btn">Location</button></Link>
+                <Link to="/exercise"><button className="nav-btn">Exercise</button></Link>
               </div>
             </div>
           </nav>
@@ -76,18 +82,36 @@ class HomePage extends Component {
                 <div className="home-page-content">
                   <div className="welcome-section">
                     <h2>Welcome to Your Health Tracker</h2>
-                    <p>
-                      Track your health and fitness data in real-time with the Wearable Health and Activity Tracker (WHAT).
-                    </p>
+                    <p>Track your health and fitness data in real-time with the Wearable Health and Activity Tracker (WHAT).</p>
                   </div>
 
                   <div className="data-section">
+                    {/* Weather Card */}
                     <div className="data-card weather-card">
-                      <h3>Weather API</h3>
-                      <p>Weather data will be displayed here.</p>
+                      <h3>Weather</h3>
+                      {weather ? (
+                        <div>
+                          <p><strong>Temperature:</strong> {currentWeather.temperature_2m} °C</p>
+                          <p><strong>Feels Like:</strong> {currentWeather.apparent_temperature} °C</p>
+                          <p><strong>Rain:</strong> {currentWeather.rain ? `${currentWeather.rain} mm` : "No Rain"}</p>
+                          <p><strong>Showers:</strong> {currentWeather.showers ? `${currentWeather.showers} mm` : "None"}</p>
+                          <p><strong>Wind Speed:</strong> {currentWeather.wind_speed_10m} km/h</p>
+
+                          {/* Daily Forecast */}
+                          <h4>Daily Forecast</h4>
+                          <p><strong>Max Temp:</strong> {dailyWeather.temperature_2m_max?.[0]} °C</p>
+                          <p><strong>Min Temp:</strong> {dailyWeather.temperature_2m_min?.[0]} °C</p>
+                          <p><strong>Sunrise:</strong> {dailyWeather.sunrise?.[0]}</p>
+                          <p><strong>Sunset:</strong> {dailyWeather.sunset?.[0]}</p>
+                          <p><strong>UV Index:</strong> {dailyWeather.uv_index_max?.[0]}</p>
+                          <p><strong>Precipitation Hours:</strong> {dailyWeather.precipitation_hours?.[0]} hrs</p>
+                        </div>
+                      ) : (
+                        <p>Loading weather data...</p>
+                      )}
                     </div>
 
-                  
+                    {/* Health Data */}
                     {data ? (
                       <div className="data-card">
                         <h3>Current Health Data</h3>
