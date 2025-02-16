@@ -13,6 +13,8 @@ import WalkReport from './WalkReport';
 import RunReport from './RunReport';
 import Workout from './Workout';
 import WorkoutReport from './WorkoutReport';
+import SignupPage from './SignupPage';
+import LoginPage from './LoginPage';
 
 
 const WEATHER_API_URL =
@@ -71,6 +73,8 @@ class HomePage extends Component {
                 <Link to="/temp"><button className="nav-btn">Skin Temperature</button></Link>
                 <Link to="/map"><button className="nav-btn">Location</button></Link>
                 <Link to="/exercise"><button className="nav-btn">Exercise</button></Link>
+                <Link to="/login"><button className="nav-btn">Login</button></Link>
+                <Link to="/signup"><button className="nav-btn">Sign Up</button></Link>
               </div>
             </div>
           </nav>
@@ -148,6 +152,8 @@ class HomePage extends Component {
             <Route path="/walkreport" element={<WalkReport data={data} />} />
             <Route path="/RunReport" element={<RunReport data={data} />} />
             <Route path="/WorkoutReport" element={<WorkoutReport data={data} />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </div>
       </Router>
