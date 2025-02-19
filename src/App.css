@@ -47,7 +47,7 @@
   color: #010301;
   border: none;
   padding: 10px 20px;
-  font-size: 1rem;
+  font-size: .8rem;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
