@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Signup.module.css';
 
-const SignupPage = () => {
+const SignupPage = ({ onSignupSuccess }) => {
   const [formData, setFormData] = useState({
     name: '',
     password: '',
@@ -9,6 +9,7 @@ const SignupPage = () => {
     weight: '',
     gender: ''
   });
+
   const [message, setMessage] = useState('');
 
   const handleChange = (e) => {
@@ -18,7 +19,7 @@ const SignupPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const response = await fetch('http://10.12.21.3:4000/signup', {
+    const response = await fetch('http://172.20.10.12:4000/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
@@ -26,6 +27,12 @@ const SignupPage = () => {
 
     const result = await response.json();
     setMessage(result.message);
+
+    if (response.ok && result.success) {
+    localStorage.setItem("username", result.username);
+    onSignupSuccess(result.username);
+  }
+
   };
 
   return (

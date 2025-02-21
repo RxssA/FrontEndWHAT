@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Login.module.css';
 
-const LoginPage = () => {
+const LoginPage = ({ onLoginSuccess }) => {
   const [credentials, setCredentials] = useState({ name: '', password: '' });
   const [message, setMessage] = useState('');
 
@@ -12,7 +12,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const response = await fetch('http://10.12.21.3:4000/login', {
+    const response = await fetch('http://172.20.10.12:4000/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials),
@@ -27,6 +27,11 @@ const LoginPage = () => {
     } else {
       setMessage(result.message);
     }
+    if (response.ok && result.success) {
+      localStorage.setItem("username", result.username); // Save login to local storage
+      onLoginSuccess(result.username);
+    }
+    
   };
 
   return (

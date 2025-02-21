@@ -8,7 +8,7 @@ const TempPage = () => {
 
   useEffect(() => {
     // Fetch the last 10 temperature records from the server
-    fetch('http://10.12.21.3:4000/data/last10') // Update with your server's endpoint
+    fetch('http://172.20.10.12:4000/data/last10') // Update with your server's endpoint
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.error('Error fetching data:', error));

@@ -16,7 +16,6 @@ import WorkoutReport from './WorkoutReport';
 import SignupPage from './SignupPage';
 import LoginPage from './LoginPage';
 
-
 const WEATHER_API_URL =
   "https://api.open-meteo.com/v1/forecast?latitude=53.270962&longitude=-9.062691&current=temperature_2m,apparent_temperature,precipitation,rain,showers,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation_probability,rain,showers,visibility,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_hours&timezone=Europe/Dublin";
 
@@ -26,17 +25,34 @@ class HomePage extends Component {
     this.state = {
       data: null,
       weather: null, // Stores weather data
+      isLoggedIn: false,  // Track login state
+      username: ''   
     };
   }
 
+  handleAuthSuccess = (username) => {
+    localStorage.setItem("username", username);
+    this.setState({ isLoggedIn: true, username }, () => {
+      window.location.reload(); // Ensures UI updates
+    });
+  };
+
+  handleLogout = () => {
+    localStorage.removeItem("username");
+    this.setState({ isLoggedIn: false, username: "" });
+  };
+
   componentDidMount() {
-    this.ws = new WebSocket("http://10.12.21.3:4000");
+    this.ws = new WebSocket("http://172.20.10.12:4000");
     this.ws.onmessage = (event) => {
       const receivedData = JSON.parse(event.data);
       this.setState({ data: receivedData });
     };
 
-
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      this.setState({ isLoggedIn: true, username: storedUsername });
+    }
     this.fetchWeatherData();
   }
 
@@ -60,7 +76,8 @@ class HomePage extends Component {
     const { data, weather } = this.state;
     const currentWeather = weather?.current || {};
     const dailyWeather = weather?.daily || {};
-    
+    const weatherClass = currentWeather.temperature_2m > 20 ? "hot-weather" : "cold-weather";
+
     return (
       <Router>
         <div className="App">
@@ -73,8 +90,17 @@ class HomePage extends Component {
                 <Link to="/temp"><button className="nav-btn">Skin Temperature</button></Link>
                 <Link to="/map"><button className="nav-btn">Location</button></Link>
                 <Link to="/exercise"><button className="nav-btn">Exercise</button></Link>
-                <Link to="/login"><button className="nav-btn">Login</button></Link>
-                <Link to="/signup"><button className="nav-btn">Sign Up</button></Link>
+                {this.state.isLoggedIn ? (
+                  <>
+                    <div className="greeting">Hello, {this.state.username}</div>
+                    <button className="nav-btn" onClick={this.handleLogout}>Logout</button>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login"><button className="nav-btn">Login</button></Link>
+                    <Link to="/signup"><button className="nav-btn">Sign Up</button></Link>
+                  </>
+                )}
               </div>
             </div>
           </nav>
@@ -91,25 +117,20 @@ class HomePage extends Component {
 
                   <div className="data-section">
                     {/* Weather Card */}
-                    <div className="data-card weather-card">
+                    <div className={`data-card weather-card ${weatherClass}`}>
                       <h3>Weather</h3>
                       {weather ? (
-                        <div>
-                          <p><strong>Temperature:</strong> {currentWeather.temperature_2m} °C</p>
-                          <p><strong>Feels Like:</strong> {currentWeather.apparent_temperature} °C</p>
-                          <p><strong>Rain:</strong> {currentWeather.rain ? `${currentWeather.rain} mm` : "No Rain"}</p>
-                          <p><strong>Showers:</strong> {currentWeather.showers ? `${currentWeather.showers} mm` : "None"}</p>
-                          <p><strong>Wind Speed:</strong> {currentWeather.wind_speed_10m} km/h</p>
-
-                          {/* Daily Forecast */}
-                          <h4>Daily Forecast</h4>
-                          <p><strong>Max Temp:</strong> {dailyWeather.temperature_2m_max?.[0]} °C</p>
-                          <p><strong>Min Temp:</strong> {dailyWeather.temperature_2m_min?.[0]} °C</p>
-                          <p><strong>Sunrise:</strong> {dailyWeather.sunrise?.[0]}</p>
-                          <p><strong>Sunset:</strong> {dailyWeather.sunset?.[0]}</p>
-                          <p><strong>UV Index:</strong> {dailyWeather.uv_index_max?.[0]}</p>
-                          <p><strong>Precipitation Hours:</strong> {dailyWeather.precipitation_hours?.[0]} hrs</p>
-                        </div>
+                        <>
+                          <div className="weather-icon">🌤️</div>
+                          <p className="weather-temp">{currentWeather.temperature_2m}°C</p>
+                          <div className="weather-details">
+                            <div><strong>Feels Like:</strong> {currentWeather.apparent_temperature} °C</div>
+                            <div><strong>Rain:</strong> {currentWeather.rain ? `${currentWeather.rain} mm` : "No Rain"}</div>
+                            <div><strong>Wind Speed:</strong> {currentWeather.wind_speed_10m} km/h</div>
+                            <div className="weather-sunrise">🌅 Sunrise: {dailyWeather.sunrise?.[0]}</div>
+                            <div className="weather-sunrise">🌇 Sunset: {dailyWeather.sunset?.[0]}</div>
+                          </div>
+                        </>
                       ) : (
                         <p>Loading weather data...</p>
                       )}
@@ -152,8 +173,8 @@ class HomePage extends Component {
             <Route path="/walkreport" element={<WalkReport data={data} />} />
             <Route path="/RunReport" element={<RunReport data={data} />} />
             <Route path="/WorkoutReport" element={<WorkoutReport data={data} />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage onSignupSuccess={this.handleAuthSuccess} />} />
+            <Route path="/login" element={<LoginPage onLoginSuccess={this.handleAuthSuccess} />} />
           </Routes>
         </div>
       </Router>
