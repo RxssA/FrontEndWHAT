@@ -12,26 +12,23 @@ const LoginPage = ({ onLoginSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const response = await fetch('http://172.20.10.12:4000/login', {
+    const response = await fetch('http://192.168.178.200:4000/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials),
     });
     
     const result = await response.json();
-
+  
     if (result.status === 'success') {
       localStorage.setItem('token', result.token);
+      localStorage.setItem('username', credentials.name); // Store username
       setMessage('Login successful! Redirecting...');
-      setTimeout(() => window.location.href = '/', 2000);
+      onLoginSuccess(credentials.name); // Trigger parent state update
+      setTimeout(() => window.location.href = '/', 1000);
     } else {
-      setMessage(result.message);
+      setMessage(result.message || 'Login failed');
     }
-    if (response.ok && result.success) {
-      localStorage.setItem("username", result.username); // Save login to local storage
-      onLoginSuccess(result.username);
-    }
-    
   };
 
   return (

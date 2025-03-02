@@ -6,6 +6,9 @@ import Map from "../Map";
 const RunReport = () => {
   const { state } = useLocation();
   const { time, distance, path } = state || {};
+  const userWeight = 70; 
+  const MET = distance / (time / 3600) < 4.8 ? 2.8 : 3.8;
+  const caloriesBurned = (MET * userWeight * (time / 3600)).toFixed(2);
 
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600).toString().padStart(2, "0");
@@ -35,6 +38,7 @@ const RunReport = () => {
       <p>Total Time: {time ? formatTime(time) : "N/A"}</p>
       <p>Total Distance: {distance ? formatDistance(distance) : "N/A"}</p>
       <p>Pace: {calculatePace()}</p>
+      <p>Calories Burned: {caloriesBurned} kcal</p>
       <div className={styles["data-box1"]}>
         {path ? (
           <div className={styles["data-box1"]}>

@@ -27,7 +27,9 @@ ChartJS.register(
 const WalkReport = () => {
   const { state } = useLocation();
   const { time, distance, path, startTime, endTime } = state || {}; 
-  
+  const userWeight = 70; // Replace this with actual user data retrieval
+  const MET = distance / (time / 3600) < 4.8 ? 2.8 : 3.8;
+  const caloriesBurned = (MET * userWeight * (time / 3600)).toFixed(2);
   // If startTime or endTime are undefined, set to current time as fallback
   const start = startTime ? new Date(startTime).getTime() : Date.now();
   const end = endTime ? new Date(endTime).getTime() : Date.now();
@@ -35,7 +37,7 @@ const WalkReport = () => {
   const [heartRateData, setHeartRateData] = useState([]);
 
   useEffect(() => {
-    fetch('http://172.20.10.12:4000/data/last10')
+    fetch('http://192.168.178.200:4000/data/last10')
       .then((response) => response.json())
       .then((data) => setHeartRateData(data))
       .catch((error) => console.error('Error fetching heart rate data:', error));
@@ -150,6 +152,7 @@ const WalkReport = () => {
       <p>Total Time: {time ? formatTime(time) : "N/A"}</p>
       <p>Total Distance: {distance ? formatDistance(distance) : "N/A"}</p>
       <p>Pace: {calculatePace()}</p>
+      <p>Calories Burned: {caloriesBurned} kcal</p>
       <div className={styles["data-box1"]}>
         {path ? (
           <div className={styles["data-box1"]}>

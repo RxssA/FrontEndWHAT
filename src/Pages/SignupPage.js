@@ -19,20 +19,20 @@ const SignupPage = ({ onSignupSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const response = await fetch('http://172.20.10.12:4000/signup', {
+    const response = await fetch('http://192.168.178.200:4000/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
     });
-
+  
     const result = await response.json();
     setMessage(result.message);
-
-    if (response.ok && result.success) {
-    localStorage.setItem("username", result.username);
-    onSignupSuccess(result.username);
-  }
-
+  
+    if (result.status === 'success') {
+      localStorage.setItem('username', formData.name);
+      onSignupSuccess(formData.name); // Trigger parent state update
+      setTimeout(() => window.location.href = '/', 1000);
+    }
   };
 
   return (

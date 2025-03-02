@@ -24,16 +24,21 @@ class HomePage extends Component {
     super(props);
     this.state = {
       data: null,
-      weather: null, // Stores weather data
-      isLoggedIn: false,  // Track login state
-      username: ''   
+      weather: null,
+      isLoggedIn: false,
+      username: '',
+      showDropdown: false
     };
+    this.toggleDropdown = this.toggleDropdown.bind(this);
   }
 
+  toggleDropdown() {
+    this.setState(prevState => ({ showDropdown: !prevState.showDropdown }));
+  }
   handleAuthSuccess = (username) => {
     localStorage.setItem("username", username);
     this.setState({ isLoggedIn: true, username }, () => {
-      window.location.reload(); // Ensures UI updates
+      window.location.reload();
     });
   };
 
@@ -43,7 +48,7 @@ class HomePage extends Component {
   };
 
   componentDidMount() {
-    this.ws = new WebSocket("http://172.20.10.12:4000");
+    this.ws = new WebSocket("http://192.168.178.200:4000");
     this.ws.onmessage = (event) => {
       const receivedData = JSON.parse(event.data);
       this.setState({ data: receivedData });
@@ -72,6 +77,8 @@ class HomePage extends Component {
     }
   }
 
+
+
   render() {
     const { data, weather } = this.state;
     const currentWeather = weather?.current || {};
@@ -91,10 +98,24 @@ class HomePage extends Component {
                 <Link to="/map"><button className="nav-btn">Location</button></Link>
                 <Link to="/exercise"><button className="nav-btn">Exercise</button></Link>
                 {this.state.isLoggedIn ? (
-                  <>
-                    <div className="greeting">Hello, {this.state.username}</div>
-                    <button className="nav-btn" onClick={this.handleLogout}>Logout</button>
-                  </>
+                  <div className="user-menu-container">
+                    <button
+                      className="user-greeting-btn"
+                      onClick={this.toggleDropdown}
+                    >
+                      👤 {this.state.username}
+                    </button>
+                    {this.state.showDropdown && (
+                      <div className="dropdown-menu">
+                        <button
+                          className="logout-btn"
+                          onClick={this.handleLogout}
+                        >
+                          Logout
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <>
                     <Link to="/login"><button className="nav-btn">Login</button></Link>
