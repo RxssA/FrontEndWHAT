@@ -48,7 +48,7 @@ class HomePage extends Component {
   };
 
   componentDidMount() {
-    this.ws = new WebSocket("http://192.168.178.200:4000");
+    this.ws = new WebSocket("http://192.168.0.23:4000");
     this.ws.onmessage = (event) => {
       const receivedData = JSON.parse(event.data);
       this.setState({ data: receivedData });
@@ -173,7 +173,7 @@ class HomePage extends Component {
                           <span>Last Updated:</span>
                           <span>{new Date(data.timestamp).toLocaleString()}</span>
                         </div>
-                        <div className="map-container">
+                        <div className="map-containerH">
                           <Map latitude={data.location?.lat} longitude={data.location?.lng} />
                         </div>
                       </div>

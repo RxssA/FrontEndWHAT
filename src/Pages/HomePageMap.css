@@ -1,6 +1,6 @@
 .map-containerH {
-    width: 10%;
-    height: 40px; 
+ width: 100% !important;
+  height: 300px !important;
   }
 
   .right-section {

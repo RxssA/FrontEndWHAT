@@ -1,34 +1,28 @@
-/* Map Page Container */
-.map-page-container {
+.data-box {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 40%;
-  padding: 20px;
-}
-
-/* Box for the Map */
-.data-box {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-  max-width: 90%; /* Adjusted width */
-  width: 80vw; /* Makes it take 80% of the viewport width */
+  width: 80vw;
   height: 450px;
+  overflow: hidden;
+  position: relative; /* Ensure positioning is relative for child elements */
+}
+
+/* Center the map */
+.map-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 
-
-/* Fix Google Map Overflow Issues */
-.map-container iframe,
-.map-container > div {
+.map-container iframe {
   width: 100%;
   height: 100%;
   border-radius: 10px;
 }
-
