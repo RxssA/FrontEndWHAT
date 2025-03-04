@@ -18,7 +18,7 @@ const TempPage = () => {
   ];
 
   useEffect(() => {
-    fetch('http://192.168.0.23:4000/data/last10')
+    fetch('http://10.12.21.3:4000/data/last10')
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.error('Error fetching data:', error));
