@@ -30,7 +30,6 @@ const WalkReport = () => {
   const userWeight = 70; // Replace this with actual user data retrieval
   const MET = distance / (time / 3600) < 4.8 ? 2.8 : 3.8;
   const caloriesBurned = (MET * userWeight * (time / 3600)).toFixed(2);
-  // If startTime or endTime are undefined, set to current time as fallback
   const start = startTime ? new Date(startTime).getTime() : Date.now();
   const end = endTime ? new Date(endTime).getTime() : Date.now();
   
@@ -75,6 +74,34 @@ const WalkReport = () => {
     const secs = Math.round(paceInSecondsPerKm % 60).toString().padStart(2, '0');
     return `${mins}:${secs} min/km`;
   };
+
+  const saveWalkReport = async () => {
+    const reportData = {
+      time,
+      distance,
+      path,
+      caloriesBurned,
+      pace: calculatePace(),
+    };
+    
+    try {
+      const response = await fetch("http://192.168.0.23:4000/walkreport", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reportData),
+      });
+      const data = await response.json();
+      console.log(data.message);
+      alert("Walk report saved successfully!");
+    } catch (error) {
+      console.error("Error saving walk report:", error);
+      alert("Failed to save walk report.");
+    }
+  };
+
+  
 
   const labels = filteredHeartRateData.map((record) => new Date(record.timestamp).toLocaleTimeString());
   const heartRateValues = filteredHeartRateData.map((record) => record.heartRate);
@@ -153,6 +180,7 @@ const WalkReport = () => {
       <p>Total Distance: {distance ? formatDistance(distance) : "N/A"}</p>
       <p>Pace: {calculatePace()}</p>
       <p>Calories Burned: {caloriesBurned} kcal</p>
+      <button onClick={saveWalkReport} className={styles["save-button"]}>Save Report</button>
       <div className={styles["data-box1"]}>
         {path ? (
           <div className={styles["data-box1"]}>
