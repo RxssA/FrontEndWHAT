@@ -37,7 +37,7 @@ const WalkReport = () => {
   const [heartRateData, setHeartRateData] = useState([]);
 
   useEffect(() => {
-    fetch('http://10.12.21.3:4000/data/last10')
+    fetch('http://192.168.0.23:4000/data/last10')
       .then((response) => response.json())
       .then((data) => setHeartRateData(data))
       .catch((error) => console.error('Error fetching heart rate data:', error));
