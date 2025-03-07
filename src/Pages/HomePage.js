@@ -103,7 +103,13 @@ class HomePage extends Component {
                       className="user-greeting-btn"
                       onClick={this.toggleDropdown}
                     >
-                      👤 {this.state.username}
+                      <div
+                        className="user-avatar"
+                        style={{ backgroundColor:'#007bff' }}
+                      >
+                        {this.state.username.charAt(0).toUpperCase()}
+                      </div>
+                      {this.state.username}
                     </button>
                     {this.state.showDropdown && (
                       <div className="dropdown-menu">

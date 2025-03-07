@@ -215,27 +215,35 @@
 }
 
 .user-avatar {
-  width: 36px !important;
-  height: 36px !important;
-  border-radius: 50% !important;
-  background-color: white !important;
-  color: #0a889e !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-weight: bold !important;
-  text-transform: uppercase !important;
-  font-size: 16px !important;
-  border: 2px solid rgba(255, 255, 255, 0.7) !important;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  color: white;
+  margin-right: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: transform 0.2s ease;
 }
 
-
-
-.user-greeting-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
+.user-avatar:hover {
+  transform: scale(1.1);
 }
 
+.user-greeting-btn {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 .dropdown-menu {
   position: absolute;
   right: 0;
