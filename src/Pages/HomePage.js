@@ -15,6 +15,7 @@ import Workout from './Workout';
 import WorkoutReport from './WorkoutReport';
 import SignupPage from './SignupPage';
 import LoginPage from './LoginPage';
+import UserProfilePage from './UserProfile'; 
 
 const WEATHER_API_URL =
   "https://api.open-meteo.com/v1/forecast?latitude=53.270962&longitude=-9.062691&current=temperature_2m,apparent_temperature,precipitation,rain,showers,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation_probability,rain,showers,visibility,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_hours&timezone=Europe/Dublin";
@@ -35,6 +36,7 @@ class HomePage extends Component {
   toggleDropdown() {
     this.setState(prevState => ({ showDropdown: !prevState.showDropdown }));
   }
+
   handleAuthSuccess = (username) => {
     localStorage.setItem("username", username);
     this.setState({ isLoggedIn: true, username }, () => {
@@ -77,8 +79,6 @@ class HomePage extends Component {
     }
   }
 
-
-
   render() {
     const { data, weather } = this.state;
     const currentWeather = weather?.current || {};
@@ -113,6 +113,7 @@ class HomePage extends Component {
                     </button>
                     {this.state.showDropdown && (
                       <div className="dropdown-menu">
+                        <Link to="/profile"><button className="profile-btn">Profile</button></Link>
                         <button
                           className="logout-btn"
                           onClick={this.handleLogout}
@@ -190,6 +191,7 @@ class HomePage extends Component {
                 </div>
               }
             />
+            <Route path="/profile" element={<UserProfilePage />} /> {/* Profile route */}
             <Route path="/heart-rate" element={<HeartRatePage data={data} />} />
             <Route path="/temp" element={<TempPage data={data} />} />
             <Route path="/map" element={<MapPage data={data} />} />
