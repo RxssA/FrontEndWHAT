@@ -1,4 +1,8 @@
-
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
 .App {
   text-align: center;
   font-family: 'Arial', sans-serif;
@@ -8,8 +12,24 @@
   flex-direction: column;
   align-items: center;
   padding-top: 80px; 
+  flex: 1;
+}
+.footer {
+  background-color: #0a889e;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  width: 100%;
+  flex-shrink: 0;
 }
 
+.content {
+  flex: 1; /* This ensures the content expands to push the footer down */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
 /* Navbar */
 .navbar {
   width: 100%;
@@ -51,6 +71,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
+  margin-top: 0px;
 }
 
 .nav-btn:hover {

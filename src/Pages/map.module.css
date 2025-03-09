@@ -4,12 +4,13 @@
   align-items: center;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 15px;
-  padding: 20px;
+  padding: 200px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   width: 80vw;
   height: 450px;
   overflow: hidden;
-  position: relative; /* Ensure positioning is relative for child elements */
+  position: relative;
+  margin-bottom: 10px;
 }
 
 /* Center the map */

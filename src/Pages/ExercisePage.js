@@ -4,12 +4,12 @@ import './Exercise.module.css';
 
 const ExercisePage = ({ data }) => {
   return (
-    <div className="centered-text">
+    <div className="centered-text1">
       <h1>Track your workout</h1>
       <p>Choose an activity to start tracking.</p>
       {data ? (
         <>
-          <div className="data-box">
+          <div className="data-box1">
           <Link to="/run">
               <button className="nav-btn">Start a run</button>
             </Link>

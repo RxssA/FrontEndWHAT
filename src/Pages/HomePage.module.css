@@ -17,6 +17,7 @@
     color: white;
     padding: 10px 20px;
     position: fixed;
+    text-align: center;
     top: 0;
     left: 0;
     z-index: 1000;
@@ -27,6 +28,7 @@
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
+    justify-content: center;
     justify-content: space-between;
     align-items: center;
   }
@@ -39,7 +41,9 @@
   
   .nav-buttons {
     display: flex;
-    gap: 15px;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Aligns items vertically */
+    
   }
   
   .nav-btn {
@@ -198,25 +202,25 @@
 .user-menu-container {
   display: flex;
   align-items: center;
-  gap: 10px; /* Adjusts spacing */
+  gap: 100px; /* Adjusts spacing */
+  justify-content: center;
 }
 
 .user-greeting-btn {
   background: none;
   border: none;
   color: white;
-  padding: 10px 15px;
   font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: background-color 0.3s;
+  
 }
 
 .user-avatar {
-  width: 36px;
-  height: 36px;
+  width: 3px;
+  height: 3px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -242,7 +246,6 @@
   padding: 8px 12px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 .dropdown-menu {
   position: absolute;

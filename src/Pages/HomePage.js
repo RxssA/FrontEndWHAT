@@ -16,6 +16,7 @@ import WorkoutReport from './WorkoutReport';
 import SignupPage from './SignupPage';
 import LoginPage from './LoginPage';
 import UserProfilePage from './UserProfile'; 
+import Footer from './Footer';
 
 const WEATHER_API_URL =
   "https://api.open-meteo.com/v1/forecast?latitude=53.270962&longitude=-9.062691&current=temperature_2m,apparent_temperature,precipitation,rain,showers,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation_probability,rain,showers,visibility,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_hours&timezone=Europe/Dublin";
@@ -89,6 +90,7 @@ class HomePage extends Component {
       <Router>
         <div className="App">
           <nav className="navbar">
+            
             <div className="navbar-content">
               <h1>Wearable Health and Activity Tracker</h1>
               <div className="nav-buttons">
@@ -132,7 +134,7 @@ class HomePage extends Component {
               </div>
             </div>
           </nav>
-
+          <div className="content">
           <Routes>
             <Route
               path="/"
@@ -205,6 +207,8 @@ class HomePage extends Component {
             <Route path="/signup" element={<SignupPage onSignupSuccess={this.handleAuthSuccess} />} />
             <Route path="/login" element={<LoginPage onLoginSuccess={this.handleAuthSuccess} />} />
           </Routes>
+          <Footer />
+          </div> 
         </div>
       </Router>
     );
