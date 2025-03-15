@@ -42,7 +42,6 @@ const WalkReport = () => {
       .catch((error) => console.error('Error fetching heart rate data:', error));
   }, []);
 
-  // Filter heart rate data based on start and end times
   const filteredHeartRateData = heartRateData.filter((record) => {
     const recordTime = new Date(record.timestamp).getTime();
     return recordTime >= start && recordTime <= end;
@@ -76,23 +75,46 @@ const WalkReport = () => {
   };
 
   const saveWalkReport = async () => {
-    const reportData = {
-      time,
-      distance,
-      path,
-      caloriesBurned,
-      pace: calculatePace(),
-    };
-    
     try {
-      const response = await fetch("http://192.168.0.23:4000/walkreport", {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('No token found. Please log in.');
+        return;
+      }
+  
+      // Fetch user data
+      const response = await fetch("http://192.168.0.23:4000/profile", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch user data');
+      }
+  
+      const userData = await response.json();
+      const userId = userData._id; // Adjust this based on your API response structure
+  
+      // Prepare report data
+      const reportData = {
+        userId,
+        time,
+        distance,
+        path,
+        caloriesBurned,
+        pace: calculatePace(),
+      };
+  
+      // Send the report data
+      const saveResponse = await fetch("http://192.168.0.23:4000/walkreport", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(reportData),
       });
-      const data = await response.json();
+  
+      const data = await saveResponse.json();
       console.log(data.message);
       alert("Walk report saved successfully!");
     } catch (error) {
@@ -100,7 +122,7 @@ const WalkReport = () => {
       alert("Failed to save walk report.");
     }
   };
-
+  
   
 
   const labels = filteredHeartRateData.map((record) => new Date(record.timestamp).toLocaleTimeString());

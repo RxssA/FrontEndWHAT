@@ -3,5 +3,6 @@
         "activityBar.background": "#482135",
         "titleBar.activeBackground": "#642E4A",
         "titleBar.activeForeground": "#FCF9FA"
-    }
+    },
+    "discord.enabled": true
 }

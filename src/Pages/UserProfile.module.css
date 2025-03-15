@@ -1,0 +1,81 @@
+/* UserProfile.css */
+
+.user-profile {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #f9f9f9;
+    font-family: Arial, sans-serif;
+}
+
+.user-profile h1 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.user-details {
+    padding: 10px;
+    border-radius: 5px;
+    background: #fff;
+    margin-bottom: 15px;
+}
+
+.user-details p {
+    margin: 5px 0;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+button {
+    flex: 1;
+    margin: 0 5px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #0a889e;
+    color: white;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #06cdff;
+}
+
+.reports-container {
+    margin-top: 20px;
+}
+
+.report-section {
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.report-section h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background: #ddd;
+}
