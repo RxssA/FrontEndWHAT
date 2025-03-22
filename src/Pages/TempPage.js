@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import {Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend,} from 'chart.js';
+import styles from './Temp.module.css';
+
 ChartJS.register(CategoryScale,LinearScale,PointElement,LineElement,Title,Tooltip,Legend);
 
-const TempPage = () => {
-  const [data, setData] = useState([]);
+const TempPage = ({ data }) => {
+  const [tempData, setTempData] = useState([]);
+  const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem('username');
   const [factIndex, setFactIndex] = useState(0);
 
   const skinTempFacts = [
@@ -18,18 +23,42 @@ const TempPage = () => {
   ];
 
   useEffect(() => {
+    if (data?.temperature) {
+      const newDataPoint = {
+        timestamp: new Date().toISOString(),
+        temperature: data.temperature,
+      };
+      setTempData((prevData) => [...prevData, newDataPoint]);
+    }
+  }, [data?.temperature]);
+
+  useEffect(() => {
     fetch('http://192.168.0.23:4000/data/last10')
       .then((response) => response.json())
-      .then((data) => setData(data))
+      .then((data) => setTempData(data))
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
 
-  if (data.length === 0) {
-    return <p>Loading data...</p>;
+  if (!isLoggedIn) {
+    return (
+      <div className={styles['centered-text']}>
+        <div className={styles['data-box']}>
+          <h2>Please Log In</h2>
+          <p>You need to be logged in to view your temperature data.</p>
+          <Link to="/login">
+            <button className={styles['nav-btn']}>Go to Login</button>
+          </Link>
+        </div>
+      </div>
+    );
   }
 
-  const labels = data.map((record) => new Date(record.timestamp).toLocaleTimeString());
-  const temperatureData = data.map((record) => record.temperature);
+  if (tempData.length === 0) {
+    return <p className={styles.loading}>Loading data...</p>;
+  }
+
+  const labels = tempData.map((record) => new Date(record.timestamp).toLocaleTimeString());
+  const temperatureData = tempData.map((record) => record.temperature);
 
   const chartOptions = {
     responsive: true,
@@ -74,14 +103,18 @@ const TempPage = () => {
   };
 
   return (
-    <div className="centered-text">
-      <h1>Temperature Data</h1>
-      <Line data={chartData} options={chartOptions} width={1000} height={400} />
-      <div className="text-container">
+    <div className={styles['centered-text']}>
+      <div className={styles['data-box']}>
+        <h1>Temperature Data</h1>
+        <div className={styles['chart-container']}>
+          <Line data={chartData} options={chartOptions} />
+        </div>
+      </div>
+      <div className={styles['text-container']}>
         <h3>Skin Temperature Fact</h3>
-        <div className="fact-box">
+        <div className={styles['fact-box']}>
           <p>{skinTempFacts[factIndex]}</p>
-          <button className="next-btn" onClick={nextFact}>➡️</button>
+          <button className={styles['next-btn']} onClick={nextFact}>➡️</button>
         </div>
       </div>
     </div>

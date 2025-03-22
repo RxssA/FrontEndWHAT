@@ -1,5 +1,3 @@
-/* HeartRatePage.module.css */
-
 .centered-text {
   display: flex;
   flex-direction: column;
@@ -48,7 +46,7 @@
 }
 
 .next-btn {
-  background-color: #0a889e;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
@@ -59,7 +57,7 @@
 }
 
 .next-btn:hover {
-  background-color: #06cdff;
+  background-color: #0056b3;
 }
 
 h1 {

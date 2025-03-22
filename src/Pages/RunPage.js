@@ -11,6 +11,14 @@ const RunPage = ({ data }) => {
   const [isRunning, setIsRunning] = useState(false);
 
   const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem('username');
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/login');
+      return;
+    }
+  }, [isLoggedIn, navigate]);
 
   useEffect(() => {
     let intervalId;

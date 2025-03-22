@@ -79,3 +79,98 @@ hr {
     height: 1px;
     background: #ddd;
 }
+
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.user-info {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.workout-history {
+  margin-top: 30px;
+}
+
+.workout-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.workout-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.workout-card:hover {
+  transform: translateY(-5px);
+}
+
+.workout-card h3 {
+  color: #0a889e;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.workout-details {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.workout-details p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.exercises-list {
+  margin-top: 15px;
+}
+
+.exercises-list h4 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.exercise-item {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.exercise-item p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.exercise-item strong {
+  color: #0a889e;
+}
+
+.save-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 20px 0;
+  transition: background-color 0.2s ease;
+}
+
+.save-button:hover {
+  background-color: #218838;
+}

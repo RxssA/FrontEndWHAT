@@ -7,7 +7,14 @@ const MapPage = ({ data }) => {
     <div className={styles['map-page-container']}>
       {data ? (
         <div className={styles["data-box"]}>
-          <Map latitude={data.location?.lat} longitude={data.location?.lng} />
+          <h1>Location Tracking</h1>
+          <div className={styles["map-wrapper"]}>
+            <Map 
+              latitude={data.location?.lat} 
+              longitude={data.location?.lng} 
+              size="large"
+            />
+          </div>
         </div>
       ) : (
         <p>Loading data...</p>

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.module.css';
 
 const LoginPage = ({ onLoginSuccess }) => {
   const [credentials, setCredentials] = useState({ name: '', password: '' });
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -25,7 +27,7 @@ const LoginPage = ({ onLoginSuccess }) => {
       localStorage.setItem('username', credentials.name); // Store username
       setMessage('Login successful! Redirecting...');
       onLoginSuccess(credentials.name); // Trigger parent state update
-      setTimeout(() => window.location.href = '/', 1000);
+      setTimeout(() => navigate('/'), 1000);
     } else {
       setMessage(result.message || 'Login failed');
     }

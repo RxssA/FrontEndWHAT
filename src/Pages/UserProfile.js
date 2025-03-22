@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './UserProfile.module.css';
+import styles from './UserProfile.module.css';
 
 
 const UserProfile = () => {
@@ -9,6 +9,7 @@ const UserProfile = () => {
     const [runReports, setRunReports] = useState([]); // Store all users' walk reports
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [workoutHistory, setWorkoutHistory] = useState([]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -31,6 +32,18 @@ const UserProfile = () => {
                 setError('Failed to fetch user data');
                 setLoading(false);
                 console.error(error);
+            });
+
+        // Fetch workout history
+        axios.get('http://192.168.0.23:4000/workoutreport', {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+            .then((workoutResponse) => {
+                setWorkoutHistory(workoutResponse.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching workout history:', error);
+                alert('Failed to fetch workout history.');
             });
     }, []);
 
@@ -71,6 +84,13 @@ const UserProfile = () => {
         }
     };
 
+    const formatTime = (seconds) => {
+        const hrs = Math.floor(seconds / 3600).toString().padStart(2, "0");
+        const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
+        const secs = (seconds % 60).toString().padStart(2, "0");
+        return `${hrs}:${mins}:${secs}`;
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -80,9 +100,10 @@ const UserProfile = () => {
     }
 
     return (
-        <div>
+        <div className={styles["profile-container"]}>
             <h1>User Profile</h1>
-            <div>
+            <div className={styles["user-info"]}>
+                <h2>Personal Information</h2>
                 <p><strong>Name:</strong> {user.name}</p>
                 <p><strong>Age:</strong> {user.age}</p>
                 <p><strong>Weight:</strong> {user.weight} kg</p>
@@ -127,6 +148,38 @@ const UserProfile = () => {
             ) : (
                 <p>No run reports available.</p>
             )}
+
+            <div className={styles["workout-history"]}>
+                <h2>Workout History</h2>
+                {workoutHistory.length > 0 ? (
+                    <div className={styles["workout-grid"]}>
+                        {workoutHistory.map((workout, index) => (
+                            <div key={index} className={styles["workout-card"]}>
+                                <h3>Workout {index + 1}</h3>
+                                <div className={styles["workout-details"]}>
+                                    <p><strong>Date:</strong> {new Date(workout.startTime).toLocaleDateString()}</p>
+                                    <p><strong>Duration:</strong> {formatTime(workout.time)}</p>
+                                    <p><strong>Start Time:</strong> {new Date(workout.startTime).toLocaleTimeString()}</p>
+                                    <p><strong>End Time:</strong> {new Date(workout.endTime).toLocaleTimeString()}</p>
+                                </div>
+                                <div className={styles["exercises-list"]}>
+                                    <h4>Exercises</h4>
+                                    {workout.exercises.map((exercise, exIndex) => (
+                                        <div key={exIndex} className={styles["exercise-item"]}>
+                                            <p><strong>{exercise.name}</strong></p>
+                                            <p>Weight: {exercise.weight} lbs</p>
+                                            <p>Reps: {exercise.reps}</p>
+                                            <p>Sets: {exercise.sets}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p>No workout history available.</p>
+                )}
+            </div>
         </div>
     );
 };

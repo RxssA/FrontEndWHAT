@@ -40,9 +40,7 @@ class HomePage extends Component {
 
   handleAuthSuccess = (username) => {
     localStorage.setItem("username", username);
-    this.setState({ isLoggedIn: true, username }, () => {
-      window.location.reload();
-    });
+    this.setState({ isLoggedIn: true, username });
   };
 
   handleLogout = () => {
@@ -204,8 +202,8 @@ class HomePage extends Component {
             <Route path="/walkreport" element={<WalkReport data={data} />} />
             <Route path="/RunReport" element={<RunReport data={data} />} />
             <Route path="/WorkoutReport" element={<WorkoutReport data={data} />} />
-            <Route path="/signup" element={<SignupPage onSignupSuccess={this.handleAuthSuccess} />} />
             <Route path="/login" element={<LoginPage onLoginSuccess={this.handleAuthSuccess} />} />
+            <Route path="/signup" element={<SignupPage onSignupSuccess={this.handleAuthSuccess} />} />
           </Routes>
           <Footer />
           </div> 

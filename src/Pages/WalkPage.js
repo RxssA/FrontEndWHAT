@@ -9,8 +9,18 @@ const WalkPage = ({ data }) => {
   const [path, setPath] = useState([]);
   const [distance, setDistance] = useState(0);
   const [isWalking, setIsWalking] = useState(false);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
 
   const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem('username');
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/login');
+      return;
+    }
+  }, [isLoggedIn, navigate]);
 
   useEffect(() => {
     let intervalId;
@@ -53,11 +63,23 @@ const WalkPage = ({ data }) => {
     setPath([]); // Reset path at the start of a walk
     setDistance(0); // Reset distance
     setTime(0); // Reset timer
+    setStartTime(new Date().toISOString()); // Record start time
   };
 
   const handleEndWalk = () => {
     setIsWalking(false);
-    navigate('/WalkReport', { state: { time, distance, path } });
+    const endTimeStr = new Date().toISOString();
+    setEndTime(endTimeStr);
+    console.log('End time set to:', endTimeStr); // Debug log
+    navigate('/WalkReport', { 
+      state: { 
+        time, 
+        distance, 
+        path,
+        startTime,
+        endTime: endTimeStr
+      } 
+    });
   };
 
   const formatTime = (seconds) => {

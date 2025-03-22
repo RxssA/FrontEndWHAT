@@ -5,8 +5,23 @@ import styles from './Workout.module.css';
 const WorkoutPage = ({ data }) => {
   const [time, setTime] = useState(0);
   const [isWorking, setIsWorking] = useState(false);
+  const [exercises, setExercises] = useState([]);
+  const [newExercise, setNewExercise] = useState({
+    name: '',
+    weight: '',
+    reps: '',
+    sets: ''
+  });
 
   const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem('username');
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/login');
+      return;
+    }
+  }, [isLoggedIn, navigate]);
 
   useEffect(() => {
     let intervalId;
@@ -29,7 +44,28 @@ const WorkoutPage = ({ data }) => {
 
   const handleEndWorkout = () => {
     setIsWorking(false);
-    navigate('/WorkoutReport', { state: { time} });
+    navigate('/WorkoutReport', { state: { time, exercises } });
+  };
+
+  const handleAddExercise = (e) => {
+    e.preventDefault();
+    if (newExercise.name && newExercise.weight && newExercise.reps && newExercise.sets) {
+      setExercises([...exercises, { ...newExercise, id: Date.now() }]);
+      setNewExercise({
+        name: '',
+        weight: '',
+        reps: '',
+        sets: ''
+      });
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewExercise(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const formatTime = (seconds) => {
@@ -38,7 +74,6 @@ const WorkoutPage = ({ data }) => {
     const secs = (seconds % 60).toString().padStart(2, '0');
     return `${hrs}:${mins}:${secs}`;
   };
-
 
   return (
     <div className={styles['map-page-container']}>
@@ -49,8 +84,61 @@ const WorkoutPage = ({ data }) => {
         <span>{data.heartRate} BPM</span>
       </div>
 
-      <button onClick={handleStartWorkout} className={styles['start-workout-button']}>Start Workout</button>
-      <button onClick={handleEndWorkout} className={styles['end-workout-button']}>End workout</button>
+      {!isWorking ? (
+        <button onClick={handleStartWorkout} className={styles['start-workout-button']}>Start Workout</button>
+      ) : (
+        <>
+          <form onSubmit={handleAddExercise} className={styles['exercise-form']}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Exercise Name"
+              value={newExercise.name}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="number"
+              name="weight"
+              placeholder="Weight (Kg)"
+              value={newExercise.weight}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="number"
+              name="reps"
+              placeholder="Reps"
+              value={newExercise.reps}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="number"
+              name="sets"
+              placeholder="Sets"
+              value={newExercise.sets}
+              onChange={handleInputChange}
+              required
+            />
+            <button type="submit" className={styles['add-exercise-button']}>Add Exercise</button>
+          </form>
+
+          <div className={styles['exercises-list']}>
+            <h2>Exercises</h2>
+            {exercises.map(exercise => (
+              <div key={exercise.id} className={styles['exercise-item']}>
+                <h3>{exercise.name}</h3>
+                <p>Weight: {exercise.weight} lbs</p>
+                <p>Reps: {exercise.reps}</p>
+                <p>Sets: {exercise.sets}</p>
+              </div>
+            ))}
+          </div>
+
+          <button onClick={handleEndWorkout} className={styles['end-workout-button']}>End Workout</button>
+        </>
+      )}
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Signup.module.css';
 
 const SignupPage = ({ onSignupSuccess }) => {
@@ -11,6 +12,7 @@ const SignupPage = ({ onSignupSuccess }) => {
   });
 
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,8 +32,8 @@ const SignupPage = ({ onSignupSuccess }) => {
   
     if (result.status === 'success') {
       localStorage.setItem('username', formData.name);
-      onSignupSuccess(formData.name); // Trigger parent state update
-      setTimeout(() => window.location.href = '/', 1000);
+      onSignupSuccess(formData.name);
+      setTimeout(() => navigate('/'), 1000);
     }
   };
 

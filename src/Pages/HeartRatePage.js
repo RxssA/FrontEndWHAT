@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,7 +11,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import './HeartRatePage.module.css';
+import styles from './HeartRatePage.module.css';
 
 ChartJS.register(
   CategoryScale,
@@ -25,6 +26,7 @@ ChartJS.register(
 const HeartRatePage = () => {
   const [data, setData] = useState([]);
   const [factIndex, setFactIndex] = useState(0);
+  const isLoggedIn = localStorage.getItem('username');
 
   const heartRateFacts = [
     "The average resting heart rate for adults is 60-100 BPM.",
@@ -43,8 +45,22 @@ const HeartRatePage = () => {
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
 
+  if (!isLoggedIn) {
+    return (
+      <div className={styles['centered-text']}>
+        <div className={styles['data-box']}>
+          <h2>Please Log In</h2>
+          <p>You need to be logged in to view your heart rate data.</p>
+          <Link to="/login">
+            <button className={styles['nav-btn']}>Go to Login</button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   if (data.length === 0) {
-    return <p>Loading data...</p>;
+    return <p className={styles.loading}>Loading data...</p>;
   }
 
   const labels = data.map((record) => new Date(record.timestamp).toLocaleTimeString());
@@ -102,16 +118,16 @@ const HeartRatePage = () => {
   };
 
   return (
-    <div className="centered-text">
-      <div className="data-box">
+    <div className={styles['centered-text']}>
+      <div className={styles['data-box']}>
         <h2>Heart Rate Data</h2>
         <Line data={chartData} options={chartOptions} width={1000} height={400} />
       </div>
-      <div className="text-container">
+      <div className={styles['text-container']}>
         <h3>Heart Rate Fact</h3>
-        <div className="fact-box">
+        <div className={styles['fact-box']}>
           <p>{heartRateFacts[factIndex]}</p>
-          <button className="next-btn" onClick={nextFact}>➡️</button>
+          <button className={styles['next-btn']} onClick={nextFact}>➡️</button>
         </div>
       </div>
     </div>

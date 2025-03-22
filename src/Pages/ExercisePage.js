@@ -1,29 +1,46 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './Exercise.module.css';
+import { Link, useNavigate } from 'react-router-dom';
+import styles from './Exercise.module.css';
 
 const ExercisePage = ({ data }) => {
+  const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem('username');
+
+  if (!isLoggedIn) {
+    return (
+      <div className={styles['centered-text']}>
+        <div className={styles['data-box']}>
+          <h1>Please Log In</h1>
+          <p>You need to be logged in to access exercise features.</p>
+          <Link to="/login">
+            <button className={styles['nav-btn']}>Go to Login</button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="centered-text1">
-      <h1>Track your workout</h1>
-      <p>Choose an activity to start tracking.</p>
-      {data ? (
-        <>
-          <div className="data-box1">
-          <Link to="/run">
-              <button className="nav-btn">Start a run</button>
+    <div className={styles['centered-text']}>
+      <div className={styles['data-box']}>
+        <h1>Track your workout</h1>
+        <p>Choose an activity to start tracking.</p>
+        {data ? (
+          <>
+            <Link to="/run">
+              <button className={styles['nav-btn']}>Start a run</button>
             </Link>
             <Link to="/walk">
-              <button className="nav-btn">Start a walk</button>
+              <button className={styles['nav-btn']}>Start a walk</button>
             </Link>
             <Link to="/workout">
-              <button className="nav-btn">Start a workout</button>
+              <button className={styles['nav-btn']}>Start a workout</button>
             </Link>
-          </div>
-        </>
-      ) : (
-        <p>Loading data...</p>
-      )}
+          </>
+        ) : (
+          <p className={styles.loading}>Loading data...</p>
+        )}
+      </div>
     </div>
   );
 };

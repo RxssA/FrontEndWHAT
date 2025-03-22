@@ -102,6 +102,8 @@ const WalkReport = () => {
         path,
         caloriesBurned,
         pace: calculatePace(),
+        startTime,
+        endTime
       };
   
       // Send the report data
@@ -198,7 +200,11 @@ const WalkReport = () => {
   return (
     <div className={styles["data-box"]}>
       <h1>Walk Report</h1>
-      <p>Total Time: {time ? formatTime(time) : "N/A"}</p>
+      <div className={styles["time-info"]}>
+        <p>Start Time: {startTime ? new Date(startTime).toLocaleString() : "N/A"}</p>
+        <p>End Time: {endTime ? new Date(endTime).toLocaleString() : "N/A"}</p>
+        <p>Total Time: {time ? formatTime(time) : "N/A"}</p>
+      </div>
       <p>Total Distance: {distance ? formatDistance(distance) : "N/A"}</p>
       <p>Pace: {calculatePace()}</p>
       <p>Calories Burned: {caloriesBurned} kcal</p>

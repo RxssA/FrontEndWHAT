@@ -14,7 +14,9 @@ body, html {
   padding-top: 80px; 
   flex: 1;
 }
-.footer {
+
+/* Footer styles */
+.App .footer {
   background-color: #0a889e;
   color: white;
   text-align: center;
@@ -72,6 +74,11 @@ body, html {
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
   margin-top: 0px;
+  min-width: 100px; /* Set a minimum width for all buttons */
+  text-align: center; /* Center the text */
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Show ellipsis for overflow text */
 }
 
 .nav-btn:hover {
@@ -188,4 +195,86 @@ body, html {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 600px;
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+  .navbar-content {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .navbar h1 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .nav-buttons {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .nav-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    min-width: 80px;
+  }
+
+  .data-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .weather-card {
+    margin-right: 0;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .data-card {
+    width: 100%;
+    margin: 0;
+  }
+
+  .map-container {
+    height: 300px;
+  }
+
+  .welcome-section {
+    padding: 15px;
+  }
+
+  .welcome-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .welcome-section p {
+    font-size: 1rem;
+  }
+}
+
+/* Touch-friendly styles */
+@media (hover: none) {
+  .nav-btn,
+  button {
+    min-height: 44px; /* Minimum touch target size */
+    padding: 12px 20px;
+  }
+
+  input, select {
+    min-height: 44px;
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+}
+
+/* iOS-specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .App {
+    padding-top: 100px; /* Adjust for iOS status bar */
+  }
+
+  .navbar {
+    padding-top: env(safe-area-inset-top);
+  }
 }
