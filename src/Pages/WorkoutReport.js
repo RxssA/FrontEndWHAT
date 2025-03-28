@@ -131,51 +131,43 @@ const WorkoutReport = () => {
 
   const saveWorkoutReport = async () => {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        alert('No token found. Please log in.');
-        return;
-      }
-  
-      // Fetch user data
-      const response = await fetch("http://192.168.0.23:4000/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to fetch user data');
-      }
-  
-      const userData = await response.json();
-      const userId = userData._id;
-  
-      // Prepare report data
-      const reportData = {
-        userId,
-        time,
-        exercises,
-        startTime,
-        endTime
-      };
-  
-      // Send the report data
-      const saveResponse = await fetch("http://192.168.0.23:4000/workoutreport", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(reportData),
-      });
-  
-      const data = await saveResponse.json();
-      console.log(data.message);
-      alert("Workout report saved successfully!");
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('No token found. Please log in.');
+            return;
+        }
+
+        // Get timestamps from state/component props
+        const reportData = {
+            time: time,  // Total duration in seconds
+            exercises: exercises,
+            startTime: startTime,  // Should be a timestamp
+            endTime: endTime       // Should be a timestamp
+        };
+
+        const response = await fetch("http://192.168.0.23:4000/workoutreport", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(reportData),
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.message || 'Failed to save workout');
+        }
+
+        console.log('Workout saved:', data);
+        alert("Workout report saved successfully!");
+        // Optional: Redirect or clear state
     } catch (error) {
-      console.error("Error saving workout report:", error);
-      alert("Failed to save workout report.");
+        console.error("Error saving workout report:", error);
+        alert(error.message || "Failed to save workout report.");
     }
-  };
+};
 
   return (
     <div className={styles["data-box"]}>

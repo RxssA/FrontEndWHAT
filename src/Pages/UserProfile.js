@@ -9,7 +9,7 @@ const UserProfile = () => {
     const [runReports, setRunReports] = useState([]); // Store all users' walk reports
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [workoutHistory, setWorkoutHistory] = useState([]);
+    const [workoutReports, setWorkoutReport] = useState([]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -36,11 +36,11 @@ const UserProfile = () => {
             });
 
         // Fetch workout history
-        axios.get('http://192.168.0.23:4000/workoutreport', {
+        axios.get('http://192.168.0.23:4000/workoutHistory', {
             headers: { Authorization: `Bearer ${token}` },
         })
             .then((workoutResponse) => {
-                setWorkoutHistory(workoutResponse.data);
+                setWorkoutHistory(workoutResponse.data.data);
             })
             .catch((error) => {
                 console.error('Error fetching workout history:', error);
@@ -85,6 +85,24 @@ const UserProfile = () => {
         }
     };
 
+    const fetchAllWorkoutReports = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert("No token found. PLease Log in.");
+            return;
+        }
+        try {
+            const response = await axios.get('http://192.168.0.23:4000/workoutHistory', {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setWorkoutReport(response.data)
+        }
+        catch (error) {
+            console.error('Error fetching workout reports:', error);
+            alert('Failed to fetch workout reports.');
+        }
+    };
+
     const formatTime = (seconds) => {
         const hrs = Math.floor(seconds / 3600).toString().padStart(2, "0");
         const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
@@ -113,6 +131,7 @@ const UserProfile = () => {
             </div>
             <button onClick={fetchAllWalkReports}>Retrieve All Walk Reports</button>
             <button onClick={fetchAllRunReports}>Retrieve All Run Reports</button>
+            <button onClick={fetchAllWorkoutReports}>Retrieve All Workout Reports</button>
             {walkReports.length > 0 ? (
                 <div>
                     <h2>All Walk Reports</h2>
@@ -130,6 +149,37 @@ const UserProfile = () => {
                 </div>
             ) : (
                 <p>No walk reports available.</p>
+            )}
+            {workoutReports.length > 0 ? (
+                <div className={styles["workout-history"]}>
+                    <h2>Workout History</h2>
+                    <div className={styles["workout-grid"]}>
+                        {workoutReports.map((report, index) => (
+                            <div key={report._id || index} className={styles["workout-card"]}>
+                                <h3>Workout Session {index + 1}</h3>
+                                <div className={styles["workout-details"]}>
+                                    <p><strong>Date:</strong> {new Date(report.startTime).toLocaleDateString()}</p>
+                                    <p><strong>Duration:</strong> {formatTime(report.time)}</p>
+                                    <p><strong>Start Time:</strong> {new Date(report.startTime).toLocaleTimeString()}</p>
+                                    <p><strong>End Time:</strong> {new Date(report.endTime).toLocaleTimeString()}</p>
+                                </div>
+                                <div className={styles["exercises-list"]}>
+                                    <h4>Exercises</h4>
+                                    {report.exercises.map((exercise, exIndex) => (
+                                        <div key={exIndex} className={styles["exercise-item"]}>
+                                            <p><strong>{exercise.name}</strong></p>
+                                            <p>Weight: {exercise.weight} kg</p>
+                                            <p>Reps: {exercise.reps}</p>
+                                            <p>Sets: {exercise.sets}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ) : (
+                <p className={styles["no-workouts"]}>No workout history available.</p>
             )}
 
             {runReports.length > 0 ? (
@@ -150,38 +200,6 @@ const UserProfile = () => {
             ) : (
                 <p>No run reports available.</p>
             )}
-
-            <div className={styles["workout-history"]}>
-                <h2>Workout History</h2>
-                {workoutHistory.length > 0 ? (
-                    <div className={styles["workout-grid"]}>
-                        {workoutHistory.map((workout, index) => (
-                            <div key={index} className={styles["workout-card"]}>
-                                <h3>Workout {index + 1}</h3>
-                                <div className={styles["workout-details"]}>
-                                    <p><strong>Date:</strong> {new Date(workout.startTime).toLocaleDateString()}</p>
-                                    <p><strong>Duration:</strong> {formatTime(workout.time)}</p>
-                                    <p><strong>Start Time:</strong> {new Date(workout.startTime).toLocaleTimeString()}</p>
-                                    <p><strong>End Time:</strong> {new Date(workout.endTime).toLocaleTimeString()}</p>
-                                </div>
-                                <div className={styles["exercises-list"]}>
-                                    <h4>Exercises</h4>
-                                    {workout.exercises.map((exercise, exIndex) => (
-                                        <div key={exIndex} className={styles["exercise-item"]}>
-                                            <p><strong>{exercise.name}</strong></p>
-                                            <p>Weight: {exercise.weight} lbs</p>
-                                            <p>Reps: {exercise.reps}</p>
-                                            <p>Sets: {exercise.sets}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <p>No workout history available.</p>
-                )}
-            </div>
         </div>
     );
 };
