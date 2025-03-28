@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "./RunReport.module.css";
 import Map from "../Map";
@@ -26,12 +26,11 @@ ChartJS.register(
 
 const RunReport = () => {
   const { state } = useLocation();
-  const { time, distance, path } = state || {};
+  const { time, distance, path, startTime, endTime } = state || {};
   const userWeight = 70;
   const MET = distance / (time / 3600) < 4.8 ? 2.8 : 3.8;
   const caloriesBurned = (MET * userWeight * (time / 3600)).toFixed(2);
-  const start = startTime ? new Date(startTime).getTime() : Date.now();
-  const end = endTime ? new Date(endTime).getTime() : Date.now();
+  const [heartRateData, setHeartRateData] = useState([]);
 
   useEffect(() => {
     fetch('http://192.168.0.23:4000/data/last10')
@@ -42,12 +41,14 @@ const RunReport = () => {
 
   const filteredHeartRateData = heartRateData.filter((record) => {
     const recordTime = new Date(record.timestamp).getTime();
+    const start = startTime ? new Date(startTime).getTime() : Date.now();
+    const end = endTime ? new Date(endTime).getTime() : Date.now();
     return recordTime >= start && recordTime <= end;
   });
 
   console.log("Filtered Heart Rate Data:", filteredHeartRateData);
-  console.log("Start Time:", new Date(start).toLocaleString());
-  console.log("End Time:", new Date(end).toLocaleString());
+  console.log("Start Time:", new Date(startTime).toLocaleString());
+  console.log("End Time:", new Date(endTime).toLocaleString());
   console.log("Heart Rate Data Timestamps:", heartRateData.map(record => new Date(record.timestamp).toLocaleString()));
 
   const formatTime = (seconds) => {
@@ -189,24 +190,28 @@ const RunReport = () => {
   return (
     <div className={styles["data-box"]}>
       <h1>Run Report</h1>
-      <p>Total Time: {time ? formatTime(time) : "N/A"}</p>
+      <div className={styles["time-info"]}>
+        <p>Start Time: {startTime ? new Date(startTime).toLocaleString() : "N/A"}</p>
+        <p>End Time: {endTime ? new Date(endTime).toLocaleString() : "N/A"}</p>
+        <p>Total Time: {time ? formatTime(time) : "N/A"}</p>
+      </div>
       <p>Total Distance: {distance ? formatDistance(distance) : "N/A"}</p>
       <p>Pace: {calculatePace()}</p>
       <p>Calories Burned: {caloriesBurned} kcal</p>
       <button onClick={saveRunReport} className={styles["save-button"]}>Save Report</button>
-      <div className={styles["data-box1"]}>
+      <div className={styles["map-container"]}>
         {path ? (
           <Map latitude={path[0]?.lat} longitude={path[0]?.lng} path={path} />
         ) : (
-          <p>Loading map...</p>
+          <p className={styles["loading"]}>Loading map...</p>
         )}
       </div>
-      <div>
-        <h2>Heart Rate Data During Walk</h2>
+      <div className={styles["chart-container"]}>
+        <h2>Heart Rate Data During Run</h2>
         {filteredHeartRateData.length > 0 ? (
           <Line data={chartData} options={chartOptions} width={1000} height={400} />
         ) : (
-          <p>No heart rate data available for the walk duration.</p>
+          <p>No heart rate data available for the run duration.</p>
         )}
       </div>
     </div>

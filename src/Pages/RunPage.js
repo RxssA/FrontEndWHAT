@@ -9,6 +9,8 @@ const RunPage = ({ data }) => {
   const [path, setPath] = useState([]);
   const [distance, setDistance] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
 
   const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem('username');
@@ -58,14 +60,16 @@ const RunPage = ({ data }) => {
 
   const handleStartRun = () => {
     setIsRunning(true);
-    setPath([]); // Reset path at the start of a walk
+    setPath([]); // Reset path at the start of a run
     setDistance(0); // Reset distance
     setTime(0); // Reset timer
+    setStartTime(new Date().toISOString()); // Set start time
   };
 
   const handleEndRun = () => {
     setIsRunning(false);
-    navigate('/RunReport', { state: { time, distance, path } });
+    setEndTime(new Date().toISOString()); // Set end time
+    navigate('/RunReport', { state: { time, distance, path, startTime, endTime } });
   };
 
   const formatTime = (seconds) => {
@@ -85,26 +89,31 @@ const RunPage = ({ data }) => {
 
   return (
     <div className={styles['map-page-container']}>
-      <h1>Run</h1>
-      <div>
-        <p>Elapsed Time: {formatTime(time)}</p>
-        <p>Total Distance: {(distance / 1000).toFixed(2)} km</p>
-        <p>Pace: {calculatePace()}</p>
-        <span>Heart Rate:</span>
-        <span>{data.heartRate} BPM</span>
-      </div>
+      <div className={styles['data-box']}>
+        <h1>Run</h1>
+        <div>
+          <p>Elapsed Time: {formatTime(time)}</p>
+          <p>Total Distance: {(distance / 1000).toFixed(2)} km</p>
+          <p>Pace: {calculatePace()}</p>
+          <p>Heart Rate: {data.heartRate} BPM</p>
+        </div>
 
-      <button onClick={handleStartRun} className={styles['start-run-button']}>Start Run</button>
-      <button onClick={handleEndRun} className={styles['end-run-button']}>End Run</button>
+        <div className={styles['button-container']}>
+          <button onClick={handleStartRun} className={styles['start-run-button']}>Start Run</button>
+          <button onClick={handleEndRun} className={styles['end-run-button']}>End Run</button>
+        </div>
 
-      <div className={styles['map-container']}>
-        {data?.location && (
-          <Map
-            latitude={data.location.lat}
-            longitude={data.location.lng}
-            path={path}
-          />
-        )}
+        <div className={styles['map-container']}>
+          {data?.location ? (
+            <Map
+              latitude={data.location.lat}
+              longitude={data.location.lng}
+              path={path}
+            />
+          ) : (
+            <p className={styles['loading-message']}>Loading map...</p>
+          )}
+        </div>
       </div>
     </div>
   );

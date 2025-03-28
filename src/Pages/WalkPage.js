@@ -99,26 +99,31 @@ const WalkPage = ({ data }) => {
 
   return (
     <div className={styles['map-page-container']}>
-      <h1>Walk</h1>
-      <div>
-        <p>Elapsed Time: {formatTime(time)}</p>
-        <p>Total Distance: {(distance / 1000).toFixed(2)} km</p>
-        <p>Pace: {calculatePace()}</p>
-        <span>Heart Rate:</span>
-        <span>{data.heartRate} BPM</span>
-      </div>
+      <div className={styles['data-box']}>
+        <h1>Walk</h1>
+        <div>
+          <p>Elapsed Time: {formatTime(time)}</p>
+          <p>Total Distance: {(distance / 1000).toFixed(2)} km</p>
+          <p>Pace: {calculatePace()}</p>
+          <p>Heart Rate: {data.heartRate} BPM</p>
+        </div>
 
-      <button onClick={handleStartWalk} className={styles['start-walk-button']}>Start Walk</button>
-      <button onClick={handleEndWalk} className={styles['end-walk-button']}>End Walk</button>
+        <div className={styles['button-container']}>
+          <button onClick={handleStartWalk} className={styles['start-walk-button']}>Start Walk</button>
+          <button onClick={handleEndWalk} className={styles['end-walk-button']}>End Walk</button>
+        </div>
 
-      <div className={styles['map-container']}>
-        {data?.location && (
-          <Map
-            latitude={data.location.lat}
-            longitude={data.location.lng}
-            path={path}
-          />
-        )}
+        <div className={styles['map-container']}>
+          {data?.location ? (
+            <Map
+              latitude={data.location.lat}
+              longitude={data.location.lng}
+              path={path}
+            />
+          ) : (
+            <p className={styles['loading-message']}>Loading map...</p>
+          )}
+        </div>
       </div>
     </div>
   );

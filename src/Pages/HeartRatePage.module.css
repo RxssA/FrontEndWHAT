@@ -73,23 +73,6 @@ h3 {
   margin-bottom: 15px;
 }
 
-/* Responsive styles */
-@media (max-width: 768px) {
-  .data-box, .text-container {
-    width: 95%;
-    padding: 15px;
-  }
-
-  .fact-box {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .next-btn {
-    margin-top: 10px;
-  }
-}
-
 /* Chart container styles */
 .chart-container {
   width: 100%;

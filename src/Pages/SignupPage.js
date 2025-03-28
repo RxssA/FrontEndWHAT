@@ -8,6 +8,7 @@ const SignupPage = ({ onSignupSuccess }) => {
     password: '',
     age: '',
     weight: '',
+    height: '',
     gender: ''
   });
 
@@ -45,6 +46,7 @@ const SignupPage = ({ onSignupSuccess }) => {
         <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
         <input type="number" name="age" placeholder="Age" onChange={handleChange} required />
         <input type="number" name="weight" placeholder="Weight (kg)" onChange={handleChange} required />
+        <input type="number" name="height" placeholder="Height (cm)" onChange={handleChange} required />
         <select name="gender" onChange={handleChange} required>
           <option value="">Select Gender</option>
           <option value="male">Male</option>

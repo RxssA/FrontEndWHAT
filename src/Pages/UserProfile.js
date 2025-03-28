@@ -25,6 +25,7 @@ const UserProfile = () => {
             headers: { Authorization: `Bearer ${token}` },
         })
             .then((response) => {
+                console.log('User data received:', response.data.user);
                 setUser(response.data.user);
                 setLoading(false);
             })
@@ -107,6 +108,7 @@ const UserProfile = () => {
                 <p><strong>Name:</strong> {user.name}</p>
                 <p><strong>Age:</strong> {user.age}</p>
                 <p><strong>Weight:</strong> {user.weight} kg</p>
+                <p><strong>Height:</strong> {user.height} cm</p>
                 <p><strong>Gender:</strong> {user.gender}</p>
             </div>
             <button onClick={fetchAllWalkReports}>Retrieve All Walk Reports</button>

@@ -83,11 +83,13 @@
     font-size: 2rem;
     color:#0a889e;
     margin-bottom: 10px;
+    text-align: left;
   }
   
   .welcome-section p {
     font-size: 1.1rem;
     color: #555;
+    text-align: left;
   }
   
   .data-section {

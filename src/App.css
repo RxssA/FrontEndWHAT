@@ -101,17 +101,22 @@ body, html {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: left;
+  width: 100%;
 }
 
 .welcome-section h2 {
   font-size: 2rem;
   color:#0a889e;
   margin-bottom: 10px;
+  text-align: left;
 }
 
 .welcome-section p {
   font-size: 1.1rem;
   color: #555;
+  text-align: left;
+  margin: 0;
+  padding: 0;
 }
 
 .data-section {
