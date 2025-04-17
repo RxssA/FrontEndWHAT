@@ -1,0 +1,171 @@
+.authContainer {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.authFormContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+}
+
+.authBox {
+  background-color: white;
+  padding: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+}
+
+.authBox h1 {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+.subtitle {
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.formGroup input,
+.formGroup select {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.consentSection {
+  margin: 1rem 0;
+}
+
+.consentLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  color: #2c3e50;
+  font-size: 0.9rem;
+}
+
+.consentLabel input[type="checkbox"] {
+  margin-top: 0.25rem;
+}
+
+.submitButton {
+  background-color: #3498db;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #2980b9;
+}
+
+.switchText {
+  text-align: center;
+  color: #7f8c8d;
+  margin-top: 1rem;
+}
+
+.switchButton {
+  background: none;
+  border: none;
+  color: #3498db;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 0;
+}
+
+.switchButton:hover {
+  text-decoration: underline;
+}
+
+.message {
+  padding: 0.75rem;
+  border-radius: 5px;
+  background-color: #f8d7da;
+  color: #721c24;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.imageContainer {
+  flex: 1;
+  background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageOverlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  max-width: 500px;
+}
+
+.imageOverlay h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.imageOverlay p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .authContainer {
+    flex-direction: column;
+  }
+
+  .imageContainer {
+    display: none;
+  }
+
+  .authBox {
+    max-width: 100%;
+    padding: 1.5rem;
+  }
+} 

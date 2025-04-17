@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import {Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend,} from 'chart.js';
 import styles from './Temp.module.css';
+import Navbar from '../Components/Navbar';
+import '../App.css';
 
 ChartJS.register(CategoryScale,LinearScale,PointElement,LineElement,Title,Tooltip,Legend);
 
@@ -103,18 +105,25 @@ const TempPage = ({ data }) => {
   };
 
   return (
-    <div className={styles['centered-text']}>
-      <div className={styles['data-box']}>
-        <h1>Temperature Data</h1>
-        <div className={styles['chart-container']}>
-          <Line data={chartData} options={chartOptions} />
-        </div>
-      </div>
-      <div className={styles['text-container']}>
-        <h3>Skin Temperature Fact</h3>
-        <div className={styles['fact-box']}>
-          <p>{skinTempFacts[factIndex]}</p>
-          <button className={styles['next-btn']} onClick={nextFact}>➡️</button>
+    <div className="App">
+      <Navbar />
+      <div className="content">
+        <div className="temp-page">
+          <div className={styles['centered-text']}>
+            <div className={styles['data-box']}>
+              <h1>Temperature Data</h1>
+              <div className={styles['chart-container']}>
+                <Line data={chartData} options={chartOptions} />
+              </div>
+            </div>
+            <div className={styles['text-container']}>
+              <h3>Skin Temperature Fact</h3>
+              <div className={styles['fact-box']}>
+                <p>{skinTempFacts[factIndex]}</p>
+                <button className={styles['next-btn']} onClick={nextFact}>➡️</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

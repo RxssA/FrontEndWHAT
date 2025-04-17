@@ -9,18 +9,25 @@ const SignupPage = ({ onSignupSuccess }) => {
     age: '',
     weight: '',
     height: '',
-    gender: ''
+    gender: '',
+    consent: false
   });
 
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!formData.consent) {
+      setMessage('You must agree to the biometric data collection to create an account');
+      return;
+    }
     
     const response = await fetch('http://192.168.0.23:4000/signup', {
       method: 'POST',
@@ -39,7 +46,7 @@ const SignupPage = ({ onSignupSuccess }) => {
   };
 
   return (
-    <div>
+    <div className="signup-container">
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <input type="text" name="name" placeholder="Name" onChange={handleChange} required />
@@ -53,9 +60,25 @@ const SignupPage = ({ onSignupSuccess }) => {
           <option value="female">Female</option>
           <option value="other">Other</option>
         </select>
+        
+        <div className="consent-section">
+          <label className="consent-label">
+            <input 
+              type="checkbox" 
+              name="consent" 
+              checked={formData.consent}
+              onChange={handleChange}
+              required
+            />
+            <span className="consent-text">
+              I agree to have my biometric data (heart rate, temperature, and location) recorded and stored for health monitoring purposes.
+            </span>
+          </label>
+        </div>
+
         <button type="submit">Sign Up</button>
       </form>
-      <p>{message}</p>
+      <p className="message">{message}</p>
     </div>
   );
 };

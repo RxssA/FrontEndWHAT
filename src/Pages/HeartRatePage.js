@@ -12,6 +12,8 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import styles from './HeartRatePage.module.css';
+import Navbar from '../Components/Navbar';
+import '../App.css';
 
 ChartJS.register(
   CategoryScale,
@@ -133,16 +135,23 @@ const HeartRatePage = () => {
   };
 
   return (
-    <div className={styles['centered-text']}>
-      <div className={styles['data-box']}>
-        <h2>Heart Rate Data</h2>
-        <Line data={chartData} options={chartOptions} width={1000} height={400} />
-      </div>
-      <div className={styles['text-container']}>
-        <h3>Heart Rate Fact</h3>
-        <div className={styles['fact-box']}>
-          <p>{heartRateFacts[factIndex]}</p>
-          <button className={styles['next-btn']} onClick={nextFact}>➡️</button>
+    <div className="App">
+      <Navbar />
+      <div className="content">
+        <div className="heart-rate-page">
+          <div className={styles['centered-text']}>
+            <div className={styles['data-box']}>
+              <h2>Heart Rate Data</h2>
+              <Line data={chartData} options={chartOptions} width={1000} height={400} />
+            </div>
+            <div className={styles['text-container']}>
+              <h3>Heart Rate Fact</h3>
+              <div className={styles['fact-box']}>
+                <p>{heartRateFacts[factIndex]}</p>
+                <button className={styles['next-btn']} onClick={nextFact}>➡️</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
