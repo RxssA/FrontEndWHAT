@@ -40,9 +40,24 @@ const HeartRatePage = () => {
 
   useEffect(() => {
     fetch('http://192.168.0.23:4000/data/last10')
-      .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((error) => console.error('Error fetching data:', error));
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Received data from API:', data);
+        if (!Array.isArray(data)) {
+          console.error('Expected array but received:', data);
+          return;
+        }
+        setData(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        setData([]); // Set empty array on error
+      });
   }, []);
 
   if (!isLoggedIn) {

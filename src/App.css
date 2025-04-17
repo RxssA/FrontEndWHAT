@@ -86,6 +86,43 @@ body, html {
   color: white;
 }
 
+.user-greeting-btn {
+  background-color: white;
+  color: #010301;
+  border: none;
+  padding: 10px 20px;
+  font-size: .8rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-top: 0px;
+  min-width: 100px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.user-greeting-btn:hover {
+  background-color: #06cdff;
+  color: white;
+}
+
+.user-avatar {
+  width: 20px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+
 .home-page-content {
   max-width: 1200px;
   width: 100%;

@@ -50,7 +50,7 @@ const UserProfile = () => {
 
     // Fetch all users' walk reports
     const fetchAllWalkReports = async () => {
-        const token = localStorage.getItem('token');
+        const token = Storage.getItem('token');
         if (!token) {
             alert('No token found. Please log in.');
             return;

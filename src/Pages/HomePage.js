@@ -18,8 +18,7 @@ import LoginPage from './LoginPage';
 import UserProfilePage from './UserProfile';
 import Footer from './Footer';
 
-const WEATHER_API_URL =
-  "https://api.open-meteo.com/v1/forecast?latitude=53.270962&longitude=-9.062691&current=temperature_2m,apparent_temperature,precipitation,rain,showers,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation_probability,rain,showers,visibility,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_hours&timezone=Europe/Dublin";
+const WEATHER_API_URL = "https://api.open-meteo.com/v1/forecast?latitude=53.270962&longitude=-9.062691&current=temperature_2m,apparent_temperature,precipitation,rain,showers,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation_probability,rain,showers,visibility,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_hours&timezone=Europe/Dublin";
 
 class HomePage extends Component {
   constructor(props) {
@@ -49,6 +48,7 @@ class HomePage extends Component {
   };
 
   componentDidMount() {
+    
     this.ws = new WebSocket("http://192.168.0.23:4000");
     this.ws.onmessage = (event) => {
       const receivedData = JSON.parse(event.data);
