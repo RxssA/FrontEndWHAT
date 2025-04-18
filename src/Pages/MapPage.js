@@ -74,12 +74,12 @@ const MapPage = () => {
           <div className={styles['map-page-container']}>
             <div className={styles["data-box"]}>
               <h1>Location Tracking</h1>
-              <div className={styles["map-wrapper"]}>
+              <div style={{ width: '100%', height: '600px', marginTop: '20px' }}>
                 {data?.location ? (
                   <Map 
                     latitude={data.location.lat} 
-                    longitude={data.location.lng} 
-                    size="large"
+                    longitude={data.location.lng}
+                    style={{ width: '100%', height: '100%' }}
                   />
                 ) : (
                   <div className={styles.noData}>

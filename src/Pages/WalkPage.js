@@ -3,8 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import Map from '../Map';
 import styles from './Walk.module.css';
 import { getDistance } from 'geolib';
+import { useData } from '../context/DataContext';
+import Navbar from '../Components/Navbar';
 
-const WalkPage = ({ data }) => {
+const WalkPage = () => {
+  const { location, heartRate } = useData();
   const [time, setTime] = useState(0);
   const [path, setPath] = useState([]);
   const [distance, setDistance] = useState(0);
@@ -17,7 +20,7 @@ const WalkPage = ({ data }) => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate('/login');
+      navigate('/auth');
       return;
     }
   }, [isLoggedIn, navigate]);
@@ -37,8 +40,8 @@ const WalkPage = ({ data }) => {
   }, [isWalking]);
 
   useEffect(() => {
-    if (isWalking && data?.location) {
-      const { lat, lng } = data.location;
+    if (isWalking && location) {
+      const { lat, lng } = location;
 
       // Add the new location to the path
       setPath((prevPath) => {
@@ -56,7 +59,7 @@ const WalkPage = ({ data }) => {
         return updatedPath;
       });
     }
-  }, [data?.location, isWalking]);
+  }, [location, isWalking]);
 
   const handleStartWalk = () => {
     setIsWalking(true);
@@ -98,31 +101,33 @@ const WalkPage = ({ data }) => {
   };
 
   return (
-    <div className={styles['map-page-container']}>
-      <div className={styles['data-box']}>
-        <h1>Walk</h1>
-        <div>
-          <p>Elapsed Time: {formatTime(time)}</p>
-          <p>Total Distance: {(distance / 1000).toFixed(2)} km</p>
-          <p>Pace: {calculatePace()}</p>
-          <p>Heart Rate: {data.heartRate} BPM</p>
-        </div>
+    <div className="App">
+      <Navbar />
+      <div className="content">
+        <div className={styles['map-page-container']}>
+          <div className={styles['data-box']}>
+            <h1>Walk</h1>
+            <div>
+              <p>Elapsed Time: {formatTime(time)}</p>
+              <p>Total Distance: {(distance / 1000).toFixed(2)} km</p>
+              <p>Pace: {calculatePace()}</p>
+              <p>Heart Rate: {heartRate} BPM</p>
+            </div>
 
-        <div className={styles['button-container']}>
-          <button onClick={handleStartWalk} className={styles['start-walk-button']}>Start Walk</button>
-          <button onClick={handleEndWalk} className={styles['end-walk-button']}>End Walk</button>
-        </div>
+            <div className={styles['button-container']}>
+              <button onClick={handleStartWalk} className={styles['start-walk-button']}>Start Walk</button>
+              <button onClick={handleEndWalk} className={styles['end-walk-button']}>End Walk</button>
+            </div>
 
-        <div className={styles['map-container']}>
-          {data?.location ? (
-            <Map
-              latitude={data.location.lat}
-              longitude={data.location.lng}
-              path={path}
-            />
-          ) : (
-            <p className={styles['loading-message']}>Loading map...</p>
-          )}
+            <div style={{ width: '100%', height: '400px', marginTop: '20px' }}>
+              <Map
+                latitude={location?.lat || 51.5074}
+                longitude={location?.lng || -0.1278}
+                path={path}
+                style={{ width: '100%', height: '100%' }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

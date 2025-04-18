@@ -21,8 +21,14 @@ class MapComponent extends Component {
       strokeWeight: 2,
     };
 
+    const defaultStyle = {
+      width: '100%',
+      height: '100%',
+      position: 'relative'
+    };
+
     return (
-      <div className="map-containerH">
+      <div style={{ width: '100%', height: '400px', position: 'relative' }}>
         <Map
           google={this.props.google}
           zoom={zoom || 14}
@@ -30,8 +36,13 @@ class MapComponent extends Component {
             lat: latitude || 53.270962,
             lng: longitude || -9.062691,
           }}
-          style={style || { width: '30%', height: '400px' }}
+          style={style || defaultStyle}
           ref={(ref) => (this.mapRef = ref)}
+          containerStyle={{
+            position: 'relative',
+            width: '100%',
+            height: '100%'
+          }}
         >
           {latitude && longitude && (
             <Marker position={{ lat: latitude, lng: longitude }} />

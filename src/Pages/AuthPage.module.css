@@ -29,7 +29,7 @@
 }
 
 .subtitle {
-  color: #7f8c8d;
+  color: #95d1d5;
   margin-bottom: 2rem;
   font-size: 1rem;
 }
@@ -138,21 +138,26 @@
 }
 
 .imageOverlay {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   color: white;
-  padding: 2rem;
+  padding: 2.5rem;
   text-align: center;
   max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .imageOverlay h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .imageOverlay p {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   line-height: 1.6;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {

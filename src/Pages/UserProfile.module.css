@@ -174,3 +174,85 @@ hr {
 .save-button:hover {
   background-color: #218838;
 }
+
+.report-buttons {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.report-button {
+    padding: 0.75rem 1.5rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.report-button:hover {
+    background-color: #2980b9;
+}
+
+.report-section {
+    margin: 2rem 0;
+}
+
+.report-section h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+}
+
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.report-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.report-card h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.report-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.report-details p {
+    margin: 0;
+    color: #34495e;
+}
+
+.exercises-list {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.exercises-list h4 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.exercise-item {
+    background-color: #f8f9fa;
+    padding: 0.75rem;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+
+.exercise-item p {
+    margin: 0.25rem 0;
+}

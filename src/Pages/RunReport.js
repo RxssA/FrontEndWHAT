@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "./RunReport.module.css";
 import Map from "../Map";
+import Navbar from "../Components/Navbar";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -188,31 +189,36 @@ const RunReport = () => {
   };
 
   return (
-    <div className={styles["data-box"]}>
-      <h1>Run Report</h1>
-      <div className={styles["time-info"]}>
-        <p>Start Time: {startTime ? new Date(startTime).toLocaleString() : "N/A"}</p>
-        <p>End Time: {endTime ? new Date(endTime).toLocaleString() : "N/A"}</p>
-        <p>Total Time: {time ? formatTime(time) : "N/A"}</p>
-      </div>
-      <p>Total Distance: {distance ? formatDistance(distance) : "N/A"}</p>
-      <p>Pace: {calculatePace()}</p>
-      <p>Calories Burned: {caloriesBurned} kcal</p>
-      <button onClick={saveRunReport} className={styles["save-button"]}>Save Report</button>
-      <div className={styles["map-container"]}>
-        {path ? (
-          <Map latitude={path[0]?.lat} longitude={path[0]?.lng} path={path} />
-        ) : (
-          <p className={styles["loading"]}>Loading map...</p>
-        )}
-      </div>
-      <div className={styles["chart-container"]}>
-        <h2>Heart Rate Data During Run</h2>
-        {filteredHeartRateData.length > 0 ? (
-          <Line data={chartData} options={chartOptions} width={1000} height={400} />
-        ) : (
-          <p>No heart rate data available for the run duration.</p>
-        )}
+    <div className="App">
+      <Navbar />
+      <div className="content">
+        <div className={styles["data-box"]}>
+          <h1>Run Report</h1>
+          <div className={styles["time-info"]}>
+            <p>Start Time: {startTime ? new Date(startTime).toLocaleString() : "N/A"}</p>
+            <p>End Time: {endTime ? new Date(endTime).toLocaleString() : "N/A"}</p>
+            <p>Total Time: {time ? formatTime(time) : "N/A"}</p>
+          </div>
+          <p>Total Distance: {distance ? formatDistance(distance) : "N/A"}</p>
+          <p>Pace: {calculatePace()}</p>
+          <p>Calories Burned: {caloriesBurned} kcal</p>
+          <button onClick={saveRunReport} className={styles["save-button"]}>Save Report</button>
+          <div className={styles["map-container"]}>
+            {path ? (
+              <Map latitude={path[0]?.lat} longitude={path[0]?.lng} path={path} />
+            ) : (
+              <p className={styles["loading"]}>Loading map...</p>
+            )}
+          </div>
+          <div className={styles["chart-container"]}>
+            <h2>Heart Rate Data During Run</h2>
+            {filteredHeartRateData.length > 0 ? (
+              <Line data={chartData} options={chartOptions} width={1000} height={400} />
+            ) : (
+              <p>No heart rate data available for the run duration.</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

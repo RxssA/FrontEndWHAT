@@ -153,33 +153,65 @@ const UserProfile = () => {
                             <p><strong>Height:</strong> {user.height} cm</p>
                             <p><strong>Gender:</strong> {user.gender}</p>
                         </div>
-                        <button onClick={fetchAllWalkReports}>Retrieve All Walk Reports</button>
-                        <button onClick={fetchAllRunReports}>Retrieve All Run Reports</button>
-                        <button onClick={fetchAllWorkoutReports}>Retrieve All Workout Reports</button>
+
+                        <div className={styles["report-buttons"]}>
+                            <button onClick={fetchAllWalkReports} className={styles["report-button"]}>Retrieve All Walk Reports</button>
+                            <button onClick={fetchAllRunReports} className={styles["report-button"]}>Retrieve All Run Reports</button>
+                            <button onClick={fetchAllWorkoutReports} className={styles["report-button"]}>Retrieve All Workout Reports</button>
+                        </div>
+
                         {walkReports.length > 0 && (
-                            <div>
-                                <h2>All Walk Reports</h2>
-                                <ul>
+                            <div className={styles["report-section"]}>
+                                <h2>Walk Reports</h2>
+                                <div className={styles["report-grid"]}>
                                     {walkReports.map((report, index) => (
-                                        <li key={index}>
-                                            <p><strong>Time:</strong> {report.time} seconds</p>
-                                            <p><strong>Distance:</strong> {report.distance} meters</p>
-                                            <p><strong>Calories Burned:</strong> {report.caloriesBurned} kcal</p>
-                                            <p><strong>Pace:</strong> {report.pace}</p>
-                                            <hr />
-                                        </li>
+                                        <div key={index} className={styles["report-card"]}>
+                                            <h3>Walk {index + 1}</h3>
+                                            <div className={styles["report-details"]}>
+                                                <p><strong>Date:</strong> {new Date(report.startTime).toLocaleDateString()}</p>
+                                                <p><strong>Duration:</strong> {formatTime(report.time)}</p>
+                                                <p><strong>Distance:</strong> {(report.distance / 1000).toFixed(2)} km</p>
+                                                <p><strong>Pace:</strong> {report.pace}</p>
+                                                <p><strong>Calories Burned:</strong> {report.caloriesBurned} kcal</p>
+                                                <p><strong>Start Time:</strong> {new Date(report.startTime).toLocaleTimeString()}</p>
+                                                <p><strong>End Time:</strong> {new Date(report.endTime).toLocaleTimeString()}</p>
+                                            </div>
+                                        </div>
                                     ))}
-                                </ul>
+                                </div>
                             </div>
                         )}
+
+                        {runReports.length > 0 && (
+                            <div className={styles["report-section"]}>
+                                <h2>Run Reports</h2>
+                                <div className={styles["report-grid"]}>
+                                    {runReports.map((report, index) => (
+                                        <div key={index} className={styles["report-card"]}>
+                                            <h3>Run {index + 1}</h3>
+                                            <div className={styles["report-details"]}>
+                                                <p><strong>Date:</strong> {new Date(report.startTime).toLocaleDateString()}</p>
+                                                <p><strong>Duration:</strong> {formatTime(report.time)}</p>
+                                                <p><strong>Distance:</strong> {(report.distance / 1000).toFixed(2)} km</p>
+                                                <p><strong>Pace:</strong> {report.pace}</p>
+                                                <p><strong>Calories Burned:</strong> {report.caloriesBurned} kcal</p>
+                                                <p><strong>Start Time:</strong> {new Date(report.startTime).toLocaleTimeString()}</p>
+                                                <p><strong>End Time:</strong> {new Date(report.endTime).toLocaleTimeString()}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         {workoutReports.length > 0 && (
-                            <div className={styles["workout-history"]}>
-                                <h2>Workout History</h2>
-                                <div className={styles["workout-grid"]}>
+                            <div className={styles["report-section"]}>
+                                <h2>Workout Reports</h2>
+                                <div className={styles["report-grid"]}>
                                     {workoutReports.map((report, index) => (
-                                        <div key={report._id || index} className={styles["workout-card"]}>
-                                            <h3>Workout Session {index + 1}</h3>
-                                            <div className={styles["workout-details"]}>
+                                        <div key={report._id || index} className={styles["report-card"]}>
+                                            <h3>Workout {index + 1}</h3>
+                                            <div className={styles["report-details"]}>
                                                 <p><strong>Date:</strong> {new Date(report.startTime).toLocaleDateString()}</p>
                                                 <p><strong>Duration:</strong> {formatTime(report.time)}</p>
                                                 <p><strong>Start Time:</strong> {new Date(report.startTime).toLocaleTimeString()}</p>
@@ -199,22 +231,6 @@ const UserProfile = () => {
                                         </div>
                                     ))}
                                 </div>
-                            </div>
-                        )}
-                        {runReports.length > 0 && (
-                            <div>
-                                <h2>All Run Reports</h2>
-                                <ul>
-                                    {runReports.map((report, index) => (
-                                        <li key={index}>
-                                            <p><strong>Time:</strong> {report.time} seconds</p>
-                                            <p><strong>Distance:</strong> {report.distance} meters</p>
-                                            <p><strong>Calories Burned:</strong> {report.caloriesBurned} kcal</p>
-                                            <p><strong>Pace:</strong> {report.pace}</p>
-                                            <hr />
-                                        </li>
-                                    ))}
-                                </ul>
                             </div>
                         )}
                     </div>

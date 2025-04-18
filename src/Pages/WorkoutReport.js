@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "./WalkReport.module.css";
 import Map from "../Map";
+import Navbar from "../Components/Navbar";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -170,44 +171,49 @@ const WorkoutReport = () => {
 };
 
   return (
-    <div className={styles["data-box"]}>
-      <h1>Workout Report</h1>
-      <div className={styles["time-info"]}>
-        <p>Start Time: {startTime ? new Date(startTime).toLocaleString() : "N/A"}</p>
-        <p>End Time: {endTime ? new Date(endTime).toLocaleString() : "N/A"}</p>
-        <p>Total Time: {time ? formatTime(time) : "N/A"}</p>
-      </div>
-      
-      {/* Workout Exercises Section */}
-      <div className={styles["exercises-section"]}>
-        <h2>Workout Exercises</h2>
-        {exercises && exercises.length > 0 ? (
-          <div className={styles["exercises-grid"]}>
-            {exercises.map((exercise) => (
-              <div key={exercise.id} className={styles["exercise-card"]}>
-                <h3>{exercise.name}</h3>
-                <div className={styles["exercise-details"]}>
-                  <p><strong>Weight:</strong> {exercise.weight} lbs</p>
-                  <p><strong>Reps:</strong> {exercise.reps}</p>
-                  <p><strong>Sets:</strong> {exercise.sets}</p>
-                </div>
-              </div>
-            ))}
+    <div className="App">
+      <Navbar />
+      <div className="content">
+        <div className={styles["data-box"]}>
+          <h1>Workout Report</h1>
+          <div className={styles["time-info"]}>
+            <p>Start Time: {startTime ? new Date(startTime).toLocaleString() : "N/A"}</p>
+            <p>End Time: {endTime ? new Date(endTime).toLocaleString() : "N/A"}</p>
+            <p>Total Time: {time ? formatTime(time) : "N/A"}</p>
           </div>
-        ) : (
-          <p>No exercises recorded during this workout.</p>
-        )}
-      </div>
+          
+          {/* Workout Exercises Section */}
+          <div className={styles["exercises-section"]}>
+            <h2>Workout Exercises</h2>
+            {exercises && exercises.length > 0 ? (
+              <div className={styles["exercises-grid"]}>
+                {exercises.map((exercise) => (
+                  <div key={exercise.id} className={styles["exercise-card"]}>
+                    <h3>{exercise.name}</h3>
+                    <div className={styles["exercise-details"]}>
+                      <p><strong>Weight:</strong> {exercise.weight} lbs</p>
+                      <p><strong>Reps:</strong> {exercise.reps}</p>
+                      <p><strong>Sets:</strong> {exercise.sets}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>No exercises recorded during this workout.</p>
+            )}
+          </div>
 
-      <button onClick={saveWorkoutReport} className={styles["save-button"]}>Save Workout Report</button>
+          <button onClick={saveWorkoutReport} className={styles["save-button"]}>Save Workout Report</button>
 
-      <div>
-        <h2>Heart Rate Data During Workout</h2>
-        {filteredHeartRateData.length > 0 ? (
-          <Line data={chartData} options={chartOptions} width={1000} height={400} />
-        ) : (
-          <p>No heart rate data available for the workout duration.</p>
-        )}
+          <div>
+            <h2>Heart Rate Data During Workout</h2>
+            {filteredHeartRateData.length > 0 ? (
+              <Line data={chartData} options={chartOptions} width={1000} height={400} />
+            ) : (
+              <p>No heart rate data available for the workout duration.</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

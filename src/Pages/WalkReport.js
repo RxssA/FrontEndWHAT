@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "./WalkReport.module.css";
 import Map from "../Map";
+import Navbar from "../Components/Navbar";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -198,37 +199,41 @@ const WalkReport = () => {
   };
 
   return (
-    <div className={styles["data-box"]}>
-      <h1>Walk Report</h1>
-      <div className={styles["time-info"]}>
-        <p>Start Time: {startTime ? new Date(startTime).toLocaleString() : "N/A"}</p>
-        <p>End Time: {endTime ? new Date(endTime).toLocaleString() : "N/A"}</p>
-        <p>Total Time: {time ? formatTime(time) : "N/A"}</p>
-      </div>
-      <p>Total Distance: {distance ? formatDistance(distance) : "N/A"}</p>
-      <p>Pace: {calculatePace()}</p>
-      <p>Calories Burned: {caloriesBurned} kcal</p>
-      <button onClick={saveWalkReport} className={styles["save-button"]}>Save Report</button>
-      <div className={styles["data-box1"]}>
-        {path ? (
-          <div className={styles["data-box1"]}>
-            <Map
-              latitude={path[0]?.lat}
-              longitude={path[0]?.lng}
-              path={path}
-            />
+    <div className="App">
+      <Navbar />
+      <div className="content">
+        <div className={styles["data-box"]}>
+          <h1>Walk Report</h1>
+          <div className={styles["time-info"]}>
+            <p>Start Time: {startTime ? new Date(startTime).toLocaleString() : "N/A"}</p>
+            <p>End Time: {endTime ? new Date(endTime).toLocaleString() : "N/A"}</p>
+            <p>Total Time: {time ? formatTime(time) : "N/A"}</p>
           </div>
-        ) : (
-          <p>Loading map...</p>
-        )}
-      </div>
-      <div>
-        <h2>Heart Rate Data During Walk</h2>
-        {filteredHeartRateData.length > 0 ? (
-          <Line data={chartData} options={chartOptions} width={1000} height={400} />
-        ) : (
-          <p>No heart rate data available for the walk duration.</p>
-        )}
+          <p>Total Distance: {distance ? formatDistance(distance) : "N/A"}</p>
+          <p>Pace: {calculatePace()}</p>
+          <p>Calories Burned: {caloriesBurned} kcal</p>
+          <button onClick={saveWalkReport} className={styles["save-button"]}>Save Report</button>
+          <div style={{ width: '100%', height: '400px', marginTop: '20px' }}>
+            {path ? (
+              <Map
+                latitude={path[0]?.lat}
+                longitude={path[0]?.lng}
+                path={path}
+                style={{ width: '100%', height: '100%' }}
+              />
+            ) : (
+              <p>Loading map...</p>
+            )}
+          </div>
+          <div>
+            <h2>Heart Rate Data During Walk</h2>
+            {filteredHeartRateData.length > 0 ? (
+              <Line data={chartData} options={chartOptions} width={1000} height={400} />
+            ) : (
+              <p>No heart rate data available for the walk duration.</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

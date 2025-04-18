@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Workout.module.css';
+import { useData } from '../context/DataContext';
+import Navbar from '../Components/Navbar';
 
-const WorkoutPage = ({ data }) => {
+const WorkoutPage = () => {
+  const { heartRate } = useData();
   const [time, setTime] = useState(0);
   const [isWorking, setIsWorking] = useState(false);
   const [exercises, setExercises] = useState([]);
@@ -18,7 +21,7 @@ const WorkoutPage = ({ data }) => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate('/login');
+      navigate('/auth');
       return;
     }
   }, [isLoggedIn, navigate]);
@@ -76,69 +79,74 @@ const WorkoutPage = ({ data }) => {
   };
 
   return (
-    <div className={styles['map-page-container']}>
-      <h1>Workout</h1>
-      <div>
-        <p>Elapsed Time: {formatTime(time)}</p>
-        <span>Heart Rate:</span>
-        <span>{data.heartRate} BPM</span>
-      </div>
-
-      {!isWorking ? (
-        <button onClick={handleStartWorkout} className={styles['start-workout-button']}>Start Workout</button>
-      ) : (
-        <>
-          <form onSubmit={handleAddExercise} className={styles['exercise-form']}>
-            <input
-              type="text"
-              name="name"
-              placeholder="Exercise Name"
-              value={newExercise.name}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              type="number"
-              name="weight"
-              placeholder="Weight (Kg)"
-              value={newExercise.weight}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              type="number"
-              name="reps"
-              placeholder="Reps"
-              value={newExercise.reps}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              type="number"
-              name="sets"
-              placeholder="Sets"
-              value={newExercise.sets}
-              onChange={handleInputChange}
-              required
-            />
-            <button type="submit" className={styles['add-exercise-button']}>Add Exercise</button>
-          </form>
-
-          <div className={styles['exercises-list']}>
-            <h2>Exercises</h2>
-            {exercises.map(exercise => (
-              <div key={exercise.id} className={styles['exercise-item']}>
-                <h3>{exercise.name}</h3>
-                <p>Weight: {exercise.weight} lbs</p>
-                <p>Reps: {exercise.reps}</p>
-                <p>Sets: {exercise.sets}</p>
-              </div>
-            ))}
+    <div className="App">
+      <Navbar />
+      <div className="content">
+        <div className={styles['map-page-container']}>
+          <h1>Workout</h1>
+          <div>
+            <p>Elapsed Time: {formatTime(time)}</p>
+            <span>Heart Rate:</span>
+            <span>{heartRate} BPM</span>
           </div>
 
-          <button onClick={handleEndWorkout} className={styles['end-workout-button']}>End Workout</button>
-        </>
-      )}
+          {!isWorking ? (
+            <button onClick={handleStartWorkout} className={styles['start-workout-button']}>Start Workout</button>
+          ) : (
+            <>
+              <form onSubmit={handleAddExercise} className={styles['exercise-form']}>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Exercise Name"
+                  value={newExercise.name}
+                  onChange={handleInputChange}
+                  required
+                />
+                <input
+                  type="number"
+                  name="weight"
+                  placeholder="Weight (Kg)"
+                  value={newExercise.weight}
+                  onChange={handleInputChange}
+                  required
+                />
+                <input
+                  type="number"
+                  name="reps"
+                  placeholder="Reps"
+                  value={newExercise.reps}
+                  onChange={handleInputChange}
+                  required
+                />
+                <input
+                  type="number"
+                  name="sets"
+                  placeholder="Sets"
+                  value={newExercise.sets}
+                  onChange={handleInputChange}
+                  required
+                />
+                <button type="submit" className={styles['add-exercise-button']}>Add Exercise</button>
+              </form>
+
+              <div className={styles['exercises-list']}>
+                <h2>Exercises</h2>
+                {exercises.map(exercise => (
+                  <div key={exercise.id} className={styles['exercise-item']}>
+                    <h3>{exercise.name}</h3>
+                    <p>Weight: {exercise.weight} lbs</p>
+                    <p>Reps: {exercise.reps}</p>
+                    <p>Sets: {exercise.sets}</p>
+                  </div>
+                ))}
+              </div>
+
+              <button onClick={handleEndWorkout} className={styles['end-workout-button']}>End Workout</button>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
