@@ -35,7 +35,7 @@ const AuthPage = () => {
 
     try {
       const endpoint = isLogin ? '/login' : '/signup';
-      const response = await fetch(`http://192.168.0.23:4000${endpoint}`, {
+      const response = await fetch(`http://${process.env.REACT_APP_API_URL}${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

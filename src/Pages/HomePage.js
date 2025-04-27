@@ -31,7 +31,7 @@ class HomePage extends Component {
   };
 
   componentDidMount() {
-    this.ws = new WebSocket("ws://192.168.0.23:4000");
+    this.ws = new WebSocket("ws://" + process.env.REACT_APP_API_URL);
     this.ws.onmessage = (event) => {
       const receivedData = JSON.parse(event.data);
       this.setState({ data: receivedData });

@@ -35,11 +35,59 @@ const TempPage = ({ data }) => {
   }, [data?.temperature]);
 
   useEffect(() => {
-    fetch('http://192.168.0.23:4000/data/last10')
-      .then((response) => response.json())
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found');
+      return;
+    }
+
+    fetch(`http://${process.env.REACT_APP_API_URL}/data/user`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => setTempData(data))
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
+
+  // Add function to send new data
+  const sendData = async (temperature) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://${process.env.REACT_APP_API_URL}/data`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          heartRate: 0, // You might want to get actual heart rate
+          temperature,
+          location: { lat: 0, lng: 0 } // You might want to get actual location
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('Data sent successfully:', result);
+    } catch (error) {
+      console.error('Error sending data:', error);
+    }
+  };
 
   if (!isLoggedIn) {
     return (
@@ -56,7 +104,16 @@ const TempPage = ({ data }) => {
   }
 
   if (tempData.length === 0) {
-    return <p className={styles.loading}>Loading data...</p>;
+    return (
+      <div className="App">
+        <Navbar />
+        <div className="content">
+          <div className="temp-page">
+            <p className={styles.loading}>Loading data...</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const labels = tempData.map((record) => new Date(record.timestamp).toLocaleTimeString());

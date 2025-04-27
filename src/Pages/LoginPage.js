@@ -14,7 +14,7 @@ const LoginPage = ({ onLoginSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const response = await fetch('http://192.168.0.23:4000/login', {
+    const response = await fetch(`http://${process.env.REACT_APP_API_URL}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials),

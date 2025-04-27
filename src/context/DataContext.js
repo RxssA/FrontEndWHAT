@@ -1,5 +1,4 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-
 const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
@@ -7,7 +6,7 @@ export const DataProvider = ({ children }) => {
   const [heartRate, setHeartRate] = useState(null);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://192.168.0.23:4000");
+    const ws = new WebSocket("ws://" + process.env.REACT_APP_API_URL);
     
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);

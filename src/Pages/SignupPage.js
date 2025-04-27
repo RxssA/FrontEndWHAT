@@ -29,7 +29,7 @@ const SignupPage = ({ onSignupSuccess }) => {
       return;
     }
     
-    const response = await fetch('http://192.168.0.23:4000/signup', {
+    const response = await fetch(`http://${process.env.REACT_APP_API_URL}/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
@@ -40,6 +40,7 @@ const SignupPage = ({ onSignupSuccess }) => {
   
     if (result.status === 'success') {
       localStorage.setItem('username', formData.name);
+      localStorage.setItem('token', result.token);
       onSignupSuccess(formData.name);
       setTimeout(() => navigate('/'), 1000);
     }

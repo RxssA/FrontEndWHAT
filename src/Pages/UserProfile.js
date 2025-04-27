@@ -4,6 +4,8 @@ import styles from './UserProfile.module.css';
 import Navbar from '../Components/Navbar';
 import '../App.css';
 
+
+
 const UserProfile = () => {
     const [user, setUser] = useState(null);
     const [walkReports, setWalkReports] = useState([]);
@@ -25,13 +27,13 @@ const UserProfile = () => {
         const fetchUserData = async () => {
             try {
                 // Fetch user profile data
-                const userResponse = await axios.get('http://192.168.0.23:4000/profile', {
+                const userResponse = await axios.get(`http://${process.env.REACT_APP_API_URL}/profile`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setUser(userResponse.data.user);
 
                 // Fetch workout history
-                const workoutResponse = await axios.get('http://192.168.0.23:4000/workoutHistory', {
+                const workoutResponse = await axios.get(`http://${process.env.REACT_APP_API_URL}/workoutHistory`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setWorkoutReport(workoutResponse.data.data || []);
@@ -55,7 +57,7 @@ const UserProfile = () => {
         }
 
         try {
-            const response = await axios.get('http://192.168.0.23:4000/walkreports', {
+            const response = await axios.get(`http://${process.env.REACT_APP_API_URL}/walkreports`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setWalkReports(response.data || []);
@@ -73,7 +75,7 @@ const UserProfile = () => {
         }
 
         try {
-            const response = await axios.get('http://192.168.0.23:4000/runreports', {
+            const response = await axios.get(`http://${process.env.REACT_APP_API_URL}/runreports`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setRunReports(response.data || []);
@@ -91,7 +93,7 @@ const UserProfile = () => {
         }
 
         try {
-            const response = await axios.get('http://192.168.0.23:4000/workoutHistory', {
+            const response = await axios.get(`http://${process.env.REACT_APP_API_URL}/workoutHistory`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setWorkoutReport(response.data.data || []);
@@ -106,6 +108,60 @@ const UserProfile = () => {
         const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
         const secs = (seconds % 60).toString().padStart(2, "0");
         return `${hrs}:${mins}:${secs}`;
+    };
+
+    const deleteWalkReport = async (reportId) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            setError('Please log in to delete reports');
+            return;
+        }
+
+        try {
+            await axios.delete(`http://${process.env.REACT_APP_API_URL}/walkreports/${reportId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setWalkReports(walkReports.filter(report => report._id !== reportId));
+        } catch (error) {
+            console.error('Error deleting walk report:', error);
+            setError('Failed to delete walk report');
+        }
+    };
+
+    const deleteRunReport = async (reportId) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            setError('Please log in to delete reports');
+            return;
+        }
+
+        try {
+            await axios.delete(`http://${process.env.REACT_APP_API_URL}/runreports/${reportId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setRunReports(runReports.filter(report => report._id !== reportId));
+        } catch (error) {
+            console.error('Error deleting run report:', error);
+            setError('Failed to delete run report');
+        }
+    };
+
+    const deleteWorkoutReport = async (reportId) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            setError('Please log in to delete reports');
+            return;
+        }
+
+        try {
+            await axios.delete(`http://${process.env.REACT_APP_API_URL}/workoutHistory/${reportId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setWorkoutReport(workoutReports.filter(report => report._id !== reportId));
+        } catch (error) {
+            console.error('Error deleting workout report:', error);
+            setError('Failed to delete workout report');
+        }
     };
 
     if (loading) {
@@ -166,7 +222,10 @@ const UserProfile = () => {
                                 <div className={styles["report-grid"]}>
                                     {walkReports.map((report, index) => (
                                         <div key={index} className={styles["report-card"]}>
-                                            <h3>Walk {index + 1}</h3>
+                                            <div className={styles["report-header"]}>
+                                                <h3>Walk {index + 1}</h3>
+                                                
+                                            </div>
                                             <div className={styles["report-details"]}>
                                                 <p><strong>Date:</strong> {new Date(report.startTime).toLocaleDateString()}</p>
                                                 <p><strong>Duration:</strong> {formatTime(report.time)}</p>
@@ -175,6 +234,12 @@ const UserProfile = () => {
                                                 <p><strong>Calories Burned:</strong> {report.caloriesBurned} kcal</p>
                                                 <p><strong>Start Time:</strong> {new Date(report.startTime).toLocaleTimeString()}</p>
                                                 <p><strong>End Time:</strong> {new Date(report.endTime).toLocaleTimeString()}</p>
+                                                <button 
+                                                    onClick={() => deleteWalkReport(report._id)}
+                                                    className={styles["delete-button"]}
+                                                >
+                                                    Delete
+                                                </button>
                                             </div>
                                         </div>
                                     ))}
@@ -188,7 +253,10 @@ const UserProfile = () => {
                                 <div className={styles["report-grid"]}>
                                     {runReports.map((report, index) => (
                                         <div key={index} className={styles["report-card"]}>
-                                            <h3>Run {index + 1}</h3>
+                                            <div className={styles["report-header"]}>
+                                                <h3>Run {index + 1}</h3>
+                                                
+                                            </div>
                                             <div className={styles["report-details"]}>
                                                 <p><strong>Date:</strong> {new Date(report.startTime).toLocaleDateString()}</p>
                                                 <p><strong>Duration:</strong> {formatTime(report.time)}</p>
@@ -197,6 +265,12 @@ const UserProfile = () => {
                                                 <p><strong>Calories Burned:</strong> {report.caloriesBurned} kcal</p>
                                                 <p><strong>Start Time:</strong> {new Date(report.startTime).toLocaleTimeString()}</p>
                                                 <p><strong>End Time:</strong> {new Date(report.endTime).toLocaleTimeString()}</p>
+                                                <button 
+                                                    onClick={() => deleteRunReport(report._id)}
+                                                    className={styles["delete-button"]}
+                                                >
+                                                    Delete
+                                                </button>
                                             </div>
                                         </div>
                                     ))}
@@ -210,12 +284,21 @@ const UserProfile = () => {
                                 <div className={styles["report-grid"]}>
                                     {workoutReports.map((report, index) => (
                                         <div key={report._id || index} className={styles["report-card"]}>
-                                            <h3>Workout {index + 1}</h3>
+                                            <div className={styles["report-header"]}>
+                                                <h3>Workout {index + 1}</h3>
+                                                
+                                            </div>
                                             <div className={styles["report-details"]}>
                                                 <p><strong>Date:</strong> {new Date(report.startTime).toLocaleDateString()}</p>
                                                 <p><strong>Duration:</strong> {formatTime(report.time)}</p>
                                                 <p><strong>Start Time:</strong> {new Date(report.startTime).toLocaleTimeString()}</p>
                                                 <p><strong>End Time:</strong> {new Date(report.endTime).toLocaleTimeString()}</p>
+                                                <button 
+                                                    onClick={() => deleteWorkoutReport(report._id)}
+                                                    className={styles["delete-button"]}
+                                                >
+                                                    Delete
+                                                </button>
                                             </div>
                                             <div className={styles["exercises-list"]}>
                                                 <h4>Exercises</h4>

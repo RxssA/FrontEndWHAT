@@ -34,7 +34,7 @@ const RunReport = () => {
   const [heartRateData, setHeartRateData] = useState([]);
 
   useEffect(() => {
-    fetch('http://192.168.0.23:4000/data/last10')
+    fetch(`http://${process.env.REACT_APP_API_URL}/data/last10`)
       .then((response) => response.json())
       .then((data) => setHeartRateData(data))
       .catch((error) => console.error('Error fetching heart rate data:', error));
@@ -81,7 +81,7 @@ const RunReport = () => {
         return;
       }
 
-      const response = await fetch("http://192.168.0.23:4000/profile", {
+      const response = await fetch(`http://${process.env.REACT_APP_API_URL}/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -101,7 +101,7 @@ const RunReport = () => {
         pace: calculatePace(),
       };
 
-      const saveResponse = await fetch("http://192.168.0.23:4000/runreport", {
+      const saveResponse = await fetch(`http://${process.env.REACT_APP_API_URL}/runreport`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

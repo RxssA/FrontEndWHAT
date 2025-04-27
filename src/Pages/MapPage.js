@@ -12,7 +12,7 @@ const MapPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://192.168.0.23:4000/data/last10');
+        const response = await fetch(`http://${process.env.REACT_APP_API_URL}/data/last10`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }

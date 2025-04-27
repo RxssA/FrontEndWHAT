@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "./WalkReport.module.css";
-import Map from "../Map";
 import Navbar from "../Components/Navbar";
 import {
   Chart as ChartJS,
@@ -36,7 +35,7 @@ const WorkoutReport = () => {
   const [heartRateData, setHeartRateData] = useState([]);
 
   useEffect(() => {
-    fetch('http://192.168.0.23:4000/data/last10')
+    fetch('http://${process.env.REACT_APP_API_URL}/data/last10')
       .then((response) => response.json())
       .then((data) => setHeartRateData(data))
       .catch((error) => console.error('Error fetching heart rate data:', error));
@@ -146,7 +145,7 @@ const WorkoutReport = () => {
             endTime: endTime       // Should be a timestamp
         };
 
-        const response = await fetch("http://192.168.0.23:4000/workoutreport", {
+        const response = await fetch("http://${process.env.REACT_APP_API_URL}/workoutreport", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -191,7 +190,7 @@ const WorkoutReport = () => {
                   <div key={exercise.id} className={styles["exercise-card"]}>
                     <h3>{exercise.name}</h3>
                     <div className={styles["exercise-details"]}>
-                      <p><strong>Weight:</strong> {exercise.weight} lbs</p>
+                      <p><strong>Weight:</strong> {exercise.weight} Kg</p>
                       <p><strong>Reps:</strong> {exercise.reps}</p>
                       <p><strong>Sets:</strong> {exercise.sets}</p>
                     </div>

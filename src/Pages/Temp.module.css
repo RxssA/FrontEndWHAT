@@ -88,18 +88,28 @@ h3 {
   }
 }
 
-/* Chart container styles */
-.chart-container {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* Loading state */
 .loading {
   text-align: center;
   padding: 20px;
   color: #666;
   font-size: 1.2em;
 }
+
+.chart-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  transform: scale(0.98);
+  opacity: 0.95;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  animation: growChart 0.5s forwards ease-in-out;
+}
+
+@keyframes growChart {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+

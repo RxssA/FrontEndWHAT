@@ -71,9 +71,13 @@ const RunPage = () => {
 
   const handleEndRun = () => {
     setIsRunning(false);
-    setEndTime(new Date().toISOString()); // Set end time
-    navigate('/RunReport', { state: { time, distance, path, startTime, endTime } });
+    const currentEndTime = new Date().toISOString(); 
+    setEndTime(currentEndTime);
+    navigate('/RunReport', {
+      state: { time, distance, path, startTime, endTime: currentEndTime }
+    });
   };
+  
 
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600).toString().padStart(2, '0');

@@ -9,6 +9,9 @@ const WorkoutPage = () => {
   const [time, setTime] = useState(0);
   const [isWorking, setIsWorking] = useState(false);
   const [exercises, setExercises] = useState([]);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
+
   const [newExercise, setNewExercise] = useState({
     name: '',
     weight: '',
@@ -43,11 +46,17 @@ const WorkoutPage = () => {
   const handleStartWorkout = () => {
     setIsWorking(true);
     setTime(0); // Reset timer
+    setStartTime(new Date()); // Set start timestamp
+    setEndTime(null); // Clear previous end time
   };
 
   const handleEndWorkout = () => {
+    const end = new Date();
     setIsWorking(false);
-    navigate('/WorkoutReport', { state: { time, exercises } });
+    setEndTime(end);
+    navigate('/WorkoutReport', {
+      state: { time, exercises, startTime, endTime: end },
+    });
   };
 
   const handleAddExercise = (e) => {
@@ -135,7 +144,7 @@ const WorkoutPage = () => {
                 {exercises.map(exercise => (
                   <div key={exercise.id} className={styles['exercise-item']}>
                     <h3>{exercise.name}</h3>
-                    <p>Weight: {exercise.weight} lbs</p>
+                    <p>Weight: {exercise.weight} Kg</p>
                     <p>Reps: {exercise.reps}</p>
                     <p>Sets: {exercise.sets}</p>
                   </div>

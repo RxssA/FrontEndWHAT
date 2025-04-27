@@ -37,7 +37,7 @@ const WalkReport = () => {
   const [heartRateData, setHeartRateData] = useState([]);
 
   useEffect(() => {
-    fetch('http://192.168.0.23:4000/data/last10')
+    fetch(`http://${process.env.REACT_APP_API_URL}/data/last10`)
       .then((response) => response.json())
       .then((data) => setHeartRateData(data))
       .catch((error) => console.error('Error fetching heart rate data:', error));
@@ -83,32 +83,19 @@ const WalkReport = () => {
         return;
       }
   
-      // Fetch user data
-      const response = await fetch("http://192.168.0.23:4000/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to fetch user data');
-      }
-  
-      const userData = await response.json();
-      const userId = userData._id; // Adjust this based on your API response structure
-  
       // Prepare report data
       const reportData = {
-        userId,
-        time,
-        distance,
+        time: formatTime(time),
+        distance: distance / 1000, // Convert meters to kilometers
         path,
-        caloriesBurned,
+        caloriesBurned: parseFloat(caloriesBurned),
         pace: calculatePace(),
-        startTime,
-        endTime
+        startTime: new Date(startTime).toISOString(),
+        endTime: new Date(endTime).toISOString()
       };
   
       // Send the report data
-      const saveResponse = await fetch("http://192.168.0.23:4000/walkreport", {
+      const saveResponse = await fetch(`http://${process.env.REACT_APP_API_URL}/walkreport`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -117,12 +104,22 @@ const WalkReport = () => {
         body: JSON.stringify(reportData),
       });
   
+      if (!saveResponse.ok) {
+        const errorData = await saveResponse.json();
+        throw new Error(errorData.message || 'Failed to save walk report');
+      }
+
       const data = await saveResponse.json();
-      console.log(data.message);
-      alert("Walk report saved successfully!");
+      console.log('Save response:', data);
+      
+      if (data.status === 'success') {
+        alert("Walk report saved successfully!");
+      } else {
+        throw new Error(data.message || 'Failed to save walk report');
+      }
     } catch (error) {
       console.error("Error saving walk report:", error);
-      alert("Failed to save walk report.");
+      alert(`Failed to save walk report: ${error.message}`);
     }
   };
   

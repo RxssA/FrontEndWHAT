@@ -23,7 +23,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://192.168.0.23:4000",
+  "proxy": "http://${process.env.URL}",
   "browserslist": {
     "production": [
       ">0.2%",

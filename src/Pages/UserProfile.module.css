@@ -31,6 +31,19 @@
     justify-content: space-between;
     margin-bottom: 15px;
 }
+.delete-button {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+  background-color: #cc0000;
+}
 
 button {
     flex: 1;
@@ -117,12 +130,6 @@ hr {
   transform: translateY(-5px);
 }
 
-.workout-card h3 {
-  color: #0a889e;
-  margin-bottom: 15px;
-  text-align: center;
-}
-
 .workout-details {
   margin-bottom: 15px;
   padding-bottom: 15px;
@@ -132,6 +139,15 @@ hr {
 .workout-details p {
   margin: 5px 0;
   color: #555;
+}
+
+.report-header {
+  justify-content: center !important;
+}
+
+.workout-card h3 {
+  width: 100%;
+  text-align: center;
 }
 
 .exercises-list {
@@ -220,8 +236,9 @@ hr {
 }
 
 .report-card h3 {
-    color: #2c3e50;
-    margin-bottom: 1rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .report-details {

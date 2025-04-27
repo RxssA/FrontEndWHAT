@@ -62,16 +62,23 @@
     transition: background-color 0.3s ease, transform 0.2s ease;
   }
   
-  .start-workout-button:hover, 
-  .end-workout-button:hover {
-    background-color: #06cdff; 
+  .start-workout-button {
+    width: fit-content !important;
+    max-width: 90vw;
+    display: inline-block;
+    align-self: center;
+    padding: 12px 20px;
+    background-color: #0a889e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
   }
   
-  .start-workout-button:active, 
-  .end-workout-button:active {
-    background-color: #06cdff; 
-    transform: scale(0.95); 
-  }
+  
   
   .map-container {
     margin: 20px auto;
